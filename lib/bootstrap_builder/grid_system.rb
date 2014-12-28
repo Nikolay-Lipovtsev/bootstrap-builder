@@ -1,10 +1,15 @@
 module BootstrapBuilder
+  
   # = Bootstrap Builder Grid System
+  #
   # Provides a number of methods for creating a simple Bootstrap blocks
+  #
   module GridSystem
     
     BASE_OPTIONS = [:col, :offset_col, :grid_system, :col_disabled]
     
+    # == Bootstrap row
+    #
     # Creates a HTML div block with Bootstrap row class.
     #
     # === Options
@@ -29,6 +34,8 @@ module BootstrapBuilder
       content_tag(:div, options) { yield }
     end
   
+    # == Bootstrap column
+    #
     # Creates a HTML div block with Bootstrap grid column class.
     #
     # === Options
@@ -69,6 +76,8 @@ module BootstrapBuilder
       end
     end
   
+    # == Bootstrap row with column
+    #
     # Creates a HTML div block with Bootstrap row class and HTML div block with Bootstrap grid column class inside.
     #
     # === Options
@@ -117,16 +126,20 @@ module BootstrapBuilder
     #      </div>
     #
     def bootstrap_row_with_col(options = {})
-      col_tag = bootstrap_col(options.slice(BASE_OPTIONS)) { yield }
-      bootstrap_row(options.except(BASE_OPTIONS)) { col_tag }
+      col_tag = bootstrap_col(options.slice(*BASE_OPTIONS)) { yield }
+      bootstrap_row(options.except(*BASE_OPTIONS)) { col_tag }
     end
   
+    # == Bootstrap grid system class
+    #
     # Creates a HTML class with Bootstrap col.
     #
     def grid_system_class(col = nil, grid_system = nil)
       "col-#{(grid_system || default_grid_system).to_s}-#{col}" if col
     end
-  
+    
+    # == Bootstrap grid system with offsetting class
+    #
     # Creates a HTML class with Bootstrap offset-col.
     #
     def grid_system_offset_class(col = nil, grid_system = nil)
