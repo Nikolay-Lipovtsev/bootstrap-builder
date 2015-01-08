@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class GridSystemTest < ActionView::TestCase
-  include BootstrapBuilder::GridSystem
+  include BootstrapBuilder
   
   test "bootstrap row" do
     expected = %{<div class="row">Test</div>}

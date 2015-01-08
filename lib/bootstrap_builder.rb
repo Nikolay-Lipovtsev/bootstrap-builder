@@ -19,16 +19,10 @@
 # OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-require 'bootstrap_builder/alert'
-require 'bootstrap_builder/form'
-require 'bootstrap_builder/glyphicon'
-require 'bootstrap_builder/grid_system'
+require 'bootstrap_builder/base'
 require 'bootstrap_builder/version'
 
 module BootstrapBuilder
   
-  ActionView::Base.send :include, BootstrapBuilder::Alert
-  ActionView::Base.send :include, BootstrapBuilder::Form
-  ActionView::Base.send :include, BootstrapBuilder::Glyphicon
-  ActionView::Base.send :include, BootstrapBuilder::GridSystem
+  ActionView::Base.send :include, BootstrapBuilder::Base
 end

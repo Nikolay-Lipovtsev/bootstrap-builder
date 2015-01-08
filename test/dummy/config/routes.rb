@@ -56,7 +56,9 @@ Rails.application.routes.draw do
   
   #resources :users
   
-  get 'users/alert'       => 'users#alert'
-  get 'users/glyphicon'   => 'users#glyphicon'
-  get 'users/grid-system' => 'users#grid_system'
+  get 'users',              to: 'users#new'
+  get 'users/alert',        to: 'users#alert'
+  get 'users/form',         to: 'users#form'
+  get 'users/glyphicon',    to: 'users#glyphicon'
+  get 'users/grid-system',  to: 'users#grid_system'
 end

@@ -1,0 +1,6 @@
+<%= bootstrap_row_with_col { content_tag :h1, "Bootstrap Forms" } %>
+<hr>
+
+<%= bootstrap_row_with_col do %>
+	<%= bootstrap_form_for(@user) { |f| f.email_field :email } %>
+<% end %>
