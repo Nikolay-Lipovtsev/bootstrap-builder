@@ -54,5 +54,9 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
   
-  resources :users
+  #resources :users
+  
+  get 'users/alert'       => 'users#alert'
+  get 'users/glyphicon'   => 'users#glyphicon'
+  get 'users/grid-system' => 'users#grid_system'
 end

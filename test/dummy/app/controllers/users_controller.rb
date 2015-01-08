@@ -1,5 +1,10 @@
 class UsersController < ApplicationController
-  def new
+  
+  def alert
+    @user = User.new
+  end
+  
+  def grid_system
     @user = User.new
   end
 end
