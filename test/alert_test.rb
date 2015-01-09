@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class AlertTest < ActionView::TestCase
-  include BootstrapBuilder
+  include BootstrapBuilder::Base
   
   test "alert with default type" do
     expected = %{<div class="alert alert-danger" role="alert">Test</div>}

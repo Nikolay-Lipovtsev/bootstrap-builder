@@ -7,21 +7,22 @@ module BootstrapBuilder
       
         include BootstrapBuilder::GridSystem
       
-        BASE_OPTIONS = ["id", "form_group_class"]
+        BASE_OPTIONS = [:id, :class]
       
         def form_group(label, content, options = {})
-          if options["layout"] == :horizontal
-            horizontal_form_group(options) { yield }
+          if options[:layout] == "horizontal"
+            horizontal_form_group(label, content, options) { yield }
           else 
-            base_form_group(options) { yield }
+            base_form_group(label, content, options) { yield }
           end
         end
       
         private
       
         def form_group_builder(options = {})
-          return yield if options.delete "form_group_disabled"
-          options["class"] = ["form-group", options.delete("form_group_class")].compact.join " "
+          return yield if options.delete :form_group_disabled
+          options[:class] = ["form-group", options.delete(:form_group_class)].compact.join " "
+          
           content_tag :div, yield, options.slice(*BASE_OPTIONS)
         end
       
@@ -30,9 +31,10 @@ module BootstrapBuilder
         end
       
         def horizontal_form_group(label, content, options = {})
-          options["offset_col"] = options.delete("offset_control_col") || 2 unless label
-          options["col"]        = options.delete("control_col") || 10
-          content               = bootstrap_col(options) { content }
+          grid_system_options              = {}
+          grid_system_options[:offset_col] = options.delete(:offset_control_col) || 2 unless label
+          grid_system_options[:col]        = options.delete(:control_col) || 10
+          content                          = bootstrap_col(grid_system_options) { content }
           form_group_builder(options) { [label, content].compact.join.html_safe }
         end
       end

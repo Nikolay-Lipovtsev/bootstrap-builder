@@ -1,7 +1,7 @@
 require 'test_helper'
 
 class GlyphiconTest < ActionView::TestCase
-  include BootstrapBuilder
+  include BootstrapBuilder::Base
   
   test "glyphicon with my type" do
     expected = %{<span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>}

@@ -12,6 +12,10 @@ class UsersController < ApplicationController
     new
   end
   
+  def form_base_control
+    new
+  end
+  
   def grid_system
     new
   end

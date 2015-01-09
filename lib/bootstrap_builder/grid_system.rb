@@ -6,7 +6,7 @@ module BootstrapBuilder
   #
   module GridSystem
     
-    BASE_OPTIONS = ["col", "offset_col", "grid_system", "col_disabled"]
+    BASE_OPTIONS = [:col, :offset_col, :grid_system, :col_disabled]
     
     # == Bootstrap row
     #
@@ -29,10 +29,10 @@ module BootstrapBuilder
     #   # => Test
     #
     def bootstrap_row(options = {})
-      options.stringify_keys!
+      options.symbolize_keys!
       
-      return yield if options.delete "row_disabled"
-      options["class"] = ["row", options["class"]].compact.join " "
+      return yield if options.delete :row_disabled
+      options[:class] = ["row", options[:class]].compact.join " "
       content_tag(:div, options) { yield }
     end
   
@@ -66,14 +66,14 @@ module BootstrapBuilder
     #   # => Test
     #
     def bootstrap_col(options = {})
-      options.stringify_keys!
+      options.symbolize_keys!
       
-      grid_system = options.delete "grid_system"
-      col         = grid_system_class options.delete("col") || 12, grid_system
-      offset_col  = grid_system_offset_class options.delete("offset_col"), grid_system
-      return yield if options.delete "col_disabled"
+      grid_system = options.delete :grid_system
+      col         = grid_system_class options.delete(:col) || 12, grid_system
+      offset_col  = grid_system_offset_class options.delete(:offset_col), grid_system
+      return yield if options.delete :col_disabled
       if col || offset_col
-        options["class"] = [col, offset_col, options["class"]].compact.join " "
+        options[:class] = [col, offset_col, options[:class]].compact.join " "
         content_tag(:div, options) { yield }
       else
         yield
@@ -130,7 +130,7 @@ module BootstrapBuilder
     #        </div>
     #
     def bootstrap_row_with_col(options = {})
-      options.stringify_keys!
+      options.symbolize_keys!
       
       col_tag = bootstrap_col(options.slice(*BASE_OPTIONS)) { yield }
       bootstrap_row(options.except(*BASE_OPTIONS)) { col_tag }

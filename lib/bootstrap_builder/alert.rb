@@ -3,12 +3,12 @@ module BootstrapBuilder
     
     def bootstrap_alert(type_or_options = default_alert_name, options = {})
       options, type_or_options = type_or_options, default_alert_name if type_or_options.is_a? Hash
-      options.stringify_keys!
+      options.symbolize_keys!
       
-      options["class"] = ["alert alert-#{type_or_options.to_s}", options["class"]].compact.join " "
-      options["role"] = "alert"
-      if options.delete("dismissible")
-        options["class"].concat(" alert-dismissible")
+      options[:class] = ["alert alert-#{type_or_options.to_s}", options[:class]].compact.join " "
+      options[:role] = "alert"
+      if options.delete(:dismissible)
+        options[:class].concat(" alert-dismissible")
         content = dismissible
       end
       content = [content, yield].compact.join.html_safe 
