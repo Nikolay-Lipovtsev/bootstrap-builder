@@ -18,13 +18,13 @@ module BootstrapBuilder
           options[:form_group_class] = ["has-feedback", options[:form_group_class]].compact.join(" ") if options[:icon]
           options[:form_group_size] = "form-group-#{options.delete(:size)}" if options[:size] && options[:layout] == "horizontal"
           options[:readonly] = "readonly" if options[:readonly]
-          options[:size] = "input-#{options.delete(:size)}" if options[:size] && helper != "btn"
-          options[:style] = "has-#{options.delete(:style)}" if options[:style] && helper != "btn"
           options[:style] = "has-error" if has_error?(method_name, options) && !([:btn, :control_static, :label].include?(helper))
         end
         
         def base_control_options(method_name, options)
-          options[:placeholder] ||= options[:label] || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if (options[:placeholder] || options["invisible_label"] || options["layout"] == "inline") && [*BASE_CONTROL_HELPERS].include?(helper)
+          options[:size] = "input-#{options.delete(:size)}" if options[:size]
+          options[:style] = "has-#{options.delete(:style)}" if options[:style]
+          options[:placeholder] ||= options[:label] || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if (options[:placeholder] || options["invisible_label"] || options["layout"] == "inline")
         end
       end
     end

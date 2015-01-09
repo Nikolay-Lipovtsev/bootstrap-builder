@@ -72,6 +72,42 @@ module BootstrapBuilder
       end
     end
     
+    def check_box(method_name, options = {}, checked_value = "1", unchecked_value = "0")
+      helper = "check_box"
+      form_group_builder(helper, method_name, options) do
+        col_block(helper, options) do
+          block_for_check_box_and_radio_button(helper, options) do
+            options[:class] = options[:control_class] if options[:control_class]
+            helper_tag = super method_name, options.slice(:class, :checked, :disabled, :multiple, :readonly), checked_value, unchecked_value
+            helper_tag = [helper_tag, options[:label]].join.html_safe
+            options[:label_class] = [options[:label_class], "checkbox-inline"].compact.join(" ") if options[:inline]
+            options[:class] = options[:label_class]
+            helper_tag = label_tag nil, helper_tag, options.slice(:class)
+            error_tag = error_message method_name, options
+            [helper_tag, help_block(options), error_tag].join.html_safe
+          end
+        end
+      end
+    end
+    
+    def radio_button(method_name, tag_value, options = {})
+      helper = "radio_button"
+      form_group_builder(helper, method_name, options) do
+        col_block(helper, options) do
+          block_for_check_box_and_radio_button(helper, options) do
+            options[:class] = options[:control_class] if options[:control_class]
+            helper_tag = super method_name, tag_value, options.slice(:class, :checked, :disabled, :multiple, :readonly)
+            helper_tag = [helper_tag, options[:label]].join.html_safe
+            options[:label_class] = [options[:label_class], "radio-inline"].compact.join(" ") if options[:inline]
+            options[:class] = options[:label_class]
+            helper_tag = label_tag nil, helper_tag, options.slice(:class)
+            error_tag = error_message method_name, options
+            [helper_tag, help_block(options), error_tag].join.html_safe
+          end
+        end
+      end
+    end
+    
     private
     
     def default_horizontal_label_col

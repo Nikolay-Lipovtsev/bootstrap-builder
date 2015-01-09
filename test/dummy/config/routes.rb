@@ -62,4 +62,5 @@ Rails.application.routes.draw do
   get 'users/form-base-control',  to: 'users#form_base_control'
   get 'users/glyphicon',          to: 'users#glyphicon'
   get 'users/grid-system',        to: 'users#grid_system'
+  get 'users/test',               to: 'users#test'
 end

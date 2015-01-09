@@ -1,0 +1,92 @@
+<a name="top"></a>
+<%= content_tag :h1, "Bootstrap Builder tests" %>
+<hr>
+
+<%= content_tag :h2, "Links" %>
+<hr>
+<a href="#bootstrap-alert">Bootstrap Alert</a><br>
+<a href="#bootstrap-form">Bootstrap Form</a><br>
+<ui>
+	<li><a href="#bootstrap-form-forms">Forms</a></li>
+	<li><a href="#bootstrap-form-base-controls">Base controls</a></li>
+	<li><a href="#bootstrap-form-base-controls-in-horizontal-form">Base controls in horizontal form</a></li>
+</ui>
+<a href="#bootstrap-glyphicon">Bootstrap Glyphicon</a><br>
+<a href="#bootstrap-grid-system">Bootstrap Grid System</a><br>
+
+<a name="bootstrap-alert"></a>
+<%= content_tag :h2, "Bootstrap Alert" %>
+<hr>
+	<%= bootstrap_alert { "Test" } %>
+	<%= bootstrap_alert("success") { "Test" } %>
+	<%= bootstrap_alert(dismissible: true) { "Test" } %>
+	<%= bootstrap_alert(id: "foo", class: "bar") { "Test" } %>
+
+<a name="bootstrap-form"></a>
+<%= content_tag :h2, "Bootstrap Form" %>
+<hr>
+
+<a name="bootstrap-form-forms"></a>
+<%= content_tag :h3, "Forms" %>
+	<%= bootstrap_form_for(@user) { |f| nil } %>
+	<%= bootstrap_form_for(@user, layout: :horizontal) { |f| nil } %>
+	<%= bootstrap_form_for(@user, layout: :horizontal, html: { id: "foo", class: "bar" }) { |f| nil } %>
+
+<a name="bootstrap-form-base-controls"></a>
+<%= content_tag :h3, "Base controls" %>
+	<%= bootstrap_form_for(@user) do |f| %>
+		<%= f.text_field :name %>
+		<%= f.text_field :name, label: "With my label text" %>
+		<%= f.text_field :name, label: "With invisible label", invisible_label: true %>
+		<%= f.text_field :name, label: "Without label", label_disabled: true %>
+		<%= f.text_field :name, label: "With my label class", label_class: "my-label-class" %>
+		<%= f.text_field :name, label: "With my control class", control_class: "my-control-class" %>
+		<%= f.text_field :name, label: "With my form group class", form_group_class: "my-form-group-class" %>
+		<%= f.text_field :name, label: "Disabled field", disabled: true %>
+		<%= f.text_field :name, label: "Readonly field", readonly: true %>
+		<%= f.text_field :name, label: "With my placeholder", placeholder: "My text" %>
+		<%= f.text_field :name, label: "Control size", size: "lg" %>
+		<%= f.text_field :name, label: "Control style", style: "success" %>
+		<%= f.text_field :name, label: "With icon", icon: "ok" %>
+		<%= f.text_field :name, label: "With help block", help_block: "Text for help block" %>
+		<%= f.text_field :name, label: "With input group", input_group: { type: :right_char, value: ".com" } %>
+	<% end %>
+
+<a name="bootstrap-form-base-controls-in-horizontal-form"></a>
+<%= content_tag :h3, "Base controls in horizontal form" %>
+	<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
+		<%= f.text_field :name %>
+		<%= f.text_field :name, label: "With my label text" %>
+		<%= f.text_field :name, label: "With invisible label", invisible_label: true %>
+		<%= f.text_field :name, label: "Without label", label_disabled: true %>
+		<%= f.text_field :name, label: "With my label class", label_class: "my-label-class" %>
+		<%= f.text_field :name, label: "With my control class", control_class: "my-control-class" %>
+		<%= f.text_field :name, label: "With my form group class", form_group_class: "my-form-group-class" %>
+		<%= f.text_field :name, label: "Disabled field", disabled: true %>
+		<%= f.text_field :name, label: "Readonly field", readonly: true %>
+		<%= f.text_field :name, label: "With my placeholder", placeholder: "My text" %>
+		<%= f.text_field :name, label: "Control size", size: "lg" %>
+		<%= f.text_field :name, label: "Control style", style: "success" %>
+		<%= f.text_field :name, label: "With icon", icon: "ok" %>
+		<%= f.text_field :name, label: "With help block", help_block: "Text for help block" %>
+		<%= f.text_field :name, label: "With input group", input_group: { type: :right_char, value: ".com" } %>
+	<% end %>
+	
+<a name="bootstrap-glyphicon"></a>
+<%= content_tag :h2, "Bootstrap Glyphicon" %>
+<hr>
+	<%= bootstrap_glyphicon("thumbs-up") %><br>
+	<%= bootstrap_glyphicon("thumbs-up", id: "foo", class: "bar") %>
+
+<a name="bootstrap-grid-system"></a>
+<%= content_tag :h2, "Bootstrap Grid System" %>
+<hr>
+	<%= bootstrap_row_with_col { content_tag :h2, "Bootstrap row" } %>
+	<%= bootstrap_row { "Bootstrap row" } %>
+	<%= bootstrap_row_with_col { content_tag :h2, "Bootstrap column" } %>
+	<%= bootstrap_col { "Bootstrap columns" } %>
+	<%= bootstrap_row_with_col { content_tag :h2, "Bootstrap row with columns" } %>
+	<%= bootstrap_row_with_col { "Bootstrap row with columns" } %>
+
+<br><br>
+<a href="#top">Top</a>

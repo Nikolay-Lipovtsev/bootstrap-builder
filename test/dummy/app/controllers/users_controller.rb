@@ -19,4 +19,8 @@ class UsersController < ApplicationController
   def grid_system
     new
   end
+  
+  def test
+    new
+  end
 end
