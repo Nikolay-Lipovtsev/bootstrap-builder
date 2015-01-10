@@ -72,6 +72,14 @@ module BootstrapBuilder
       end
     end
     
+    CHECK_BOX_AND_RADIO_HELPERS.each do |helper|
+      define_method(helper) do |method_name, *args|
+        options = args.detect { |a| a.is_a?(Hash) } || {}
+        base_options method_name, options
+        
+      end
+    end
+    
     def check_box(method_name, options = {}, checked_value = "1", unchecked_value = "0")
       helper = "check_box"
       form_group_builder(helper, method_name, options) do
