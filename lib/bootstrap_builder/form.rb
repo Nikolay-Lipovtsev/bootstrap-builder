@@ -44,7 +44,7 @@ module BootstrapBuilder
       content_is_options = content_or_options.is_a? Hash
       options, content_or_options = content_or_options, nil if content_is_options
       unless options[:label_disabled]
-        grid_system_class   = grid_system_class((options[:label_col] || default_horizontal_label_col), options[:grid_system]) if options[:layout] == "horizontal"
+        grid_system_class     = grid_system_class((options[:label_col] || default_horizontal_label_col), options[:grid_system]) if options[:layout] == "horizontal"
         options[:label_class] = [options[:label_class], "control-label"].compact.join(" ")
         options[:label_class] = [options[:label_class], "#{grid_system_class}"].compact.join(" ") if options[:layout] == "horizontal"
         options[:label_class] = [options[:label_class], "sr-only"].compact.join(" ") if options[:invisible_label] || options[:layout] == "inline"
@@ -64,55 +64,30 @@ module BootstrapBuilder
         help            = help_block options
         error           = error_message method_name, options
         icon            = icon_block options
-        options[:class] = [options[:control_class], "form-control", options[:size]].compact.join(" ")
-        content         = super method_name, options.slice(:class, :disabled, :placeholder, :readonly, :rows)
-        content         = [content, icon, help, error].compact.join.html_safe
+        control         = super method_name, options.slice(:class, :disabled, :placeholder, :readonly, :rows)
+        control         = [control, icon, help, error].compact.join.html_safe
         label           = label method_name, options[:label], options
-        form_group label, content, options
+        form_group label, control, options
       end
     end
     
-    CHECK_BOX_AND_RADIO_HELPERS.each do |helper|
+    CHECKBOX_AND_RADIO_HELPERS.each do |helper|
+      helper_name = helper.gsub /_|button/, ""
       define_method(helper) do |method_name, *args|
         options = args.detect { |a| a.is_a?(Hash) } || {}
         base_options method_name, options
-        
-      end
-    end
-    
-    def check_box(method_name, options = {}, checked_value = "1", unchecked_value = "0")
-      helper = "check_box"
-      form_group_builder(helper, method_name, options) do
-        col_block(helper, options) do
-          block_for_check_box_and_radio_button(helper, options) do
-            options[:class] = options[:control_class] if options[:control_class]
-            helper_tag = super method_name, options.slice(:class, :checked, :disabled, :multiple, :readonly), checked_value, unchecked_value
-            helper_tag = [helper_tag, options[:label]].join.html_safe
-            options[:label_class] = [options[:label_class], "checkbox-inline"].compact.join(" ") if options[:inline]
-            options[:class] = options[:label_class]
-            helper_tag = label_tag nil, helper_tag, options.slice(:class)
-            error_tag = error_message method_name, options
-            [helper_tag, help_block(options), error_tag].join.html_safe
-          end
-        end
-      end
-    end
-    
-    def radio_button(method_name, tag_value, options = {})
-      helper = "radio_button"
-      form_group_builder(helper, method_name, options) do
-        col_block(helper, options) do
-          block_for_check_box_and_radio_button(helper, options) do
-            options[:class] = options[:control_class] if options[:control_class]
-            helper_tag = super method_name, tag_value, options.slice(:class, :checked, :disabled, :multiple, :readonly)
-            helper_tag = [helper_tag, options[:label]].join.html_safe
-            options[:label_class] = [options[:label_class], "radio-inline"].compact.join(" ") if options[:inline]
-            options[:class] = options[:label_class]
-            helper_tag = label_tag nil, helper_tag, options.slice(:class)
-            error_tag = error_message method_name, options
-            [helper_tag, help_block(options), error_tag].join.html_safe
-          end
-        end
+        checkbox_and_radio_options options
+        help              = help_block options
+        error             = error_message method_name, options
+        form_group_label  = label method_name, options[:form_group_label], options if options[:form_group_label]
+        options[:class]   = options[:control_class]
+        control           = super method_name, *args.map { |a| a.is_a?(Hash) ? options.slice(:class) : a }
+        control           = [control, options[:label]].join.html_safe
+        options[:class]   = [options[:label_class], "#{helper_name}-inline"].compact.join(" ") if options[:inline]
+        control           = label_tag nil, control, options.slice(:class)
+        control           = checkbox_and_radio_block helper_name, control, options
+        control           = [control, help, error].join.html_safe
+        form_group form_group_label, control, options
       end
     end
     
@@ -120,6 +95,12 @@ module BootstrapBuilder
     
     def default_horizontal_label_col
       2
+    end
+    
+    def checkbox_and_radio_block(helper_name, control, options)
+      classes = [helper_name, options.delete(:disabled)].compact.join(" ")
+      return content_tag(:div, control, class: classes) unless options[:layout] == "inline"
+      control
     end
   end
 end

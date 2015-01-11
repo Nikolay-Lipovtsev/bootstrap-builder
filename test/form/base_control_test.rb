@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class FormTest < ActionView::TestCase
+class BaseControlTest < ActionView::TestCase
   include BootstrapBuilder::Base
   
   def setup

@@ -12,8 +12,7 @@ module BootstrapBuilder
           
           BASE_FORM_OPTIONS.each{ |name| options[name] ||= @options[name] if @options[name] }
           
-          options[:checked] = "checked" if options[:checked]
-          options[:class] = ["form-control", options[:control_class], options[:size]].compact.join(" ")
+          options[:class] = [options[:control_class], options[:size]].compact.join(" ")
           options[:disabled] = "disabled" if options[:disabled]
           options[:form_group_class] = ["has-feedback", options[:form_group_class]].compact.join(" ") if options[:icon]
           options[:form_group_size] = "form-group-#{options.delete(:size)}" if options[:size] && options[:layout] == "horizontal"
@@ -22,9 +21,14 @@ module BootstrapBuilder
         end
         
         def base_control_options(method_name, options)
+          options[:class] = ["form-control", options[:class]].compact.join(" ")
           options[:size] = "input-#{options.delete(:size)}" if options[:size]
           options[:style] = "has-#{options.delete(:style)}" if options[:style]
           options[:placeholder] ||= options[:label] || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if (options[:placeholder] || options["invisible_label"] || options["layout"] == "inline")
+        end
+        
+        def checkbox_and_radio_options(options)
+          options[:checked] = "checked" if options[:checked]
         end
       end
     end

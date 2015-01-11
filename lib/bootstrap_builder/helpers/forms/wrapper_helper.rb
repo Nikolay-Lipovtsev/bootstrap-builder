@@ -10,6 +10,7 @@ module BootstrapBuilder
         BASE_OPTIONS = [:id, :class]
       
         def form_group(label, content, options = {})
+          @form_group_disabled = true
           if options[:layout] == "horizontal"
             horizontal_form_group(label, content, options) { yield }
           else 
@@ -20,7 +21,7 @@ module BootstrapBuilder
         private
       
         def form_group_builder(options = {})
-          return yield if options.delete :form_group_disabled
+          return yield if options.delete(:form_group_disabled)
           options[:class] = ["form-group", options.delete(:form_group_class)].compact.join " "
           
           content_tag :div, yield, options.slice(*BASE_OPTIONS)

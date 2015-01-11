@@ -1,20 +1,26 @@
+
+<% titel_name = ["Bootstrap Alert", "Bootstrap Form", ["Forms", "Base controls", "Base controls in horizontal form", "Checkbox and radio", "Checkbox and radio in horizontal form"], "Bootstrap Glyphicon", "Bootstrap Grid System"] %>
+
 <a name="top"></a>
 <%= content_tag :h1, "Bootstrap Builder tests" %>
 <hr>
 
 <%= content_tag :h2, "Links" %>
 <hr>
-<a href="#bootstrap-alert">Bootstrap Alert</a><br>
-<a href="#bootstrap-form">Bootstrap Form</a><br>
-<ui>
-	<li><a href="#bootstrap-form-forms">Forms</a></li>
-	<li><a href="#bootstrap-form-base-controls">Base controls</a></li>
-	<li><a href="#bootstrap-form-base-controls-in-horizontal-form">Base controls in horizontal form</a></li>
-</ui>
-<a href="#bootstrap-glyphicon">Bootstrap Glyphicon</a><br>
-<a href="#bootstrap-grid-system">Bootstrap Grid System</a><br>
 
-<a name="bootstrap-alert"></a>
+<% titel_name.each do |name| %>
+	<% unless name.is_a? (Array) %>
+		<%= link_to name, "##{name.parameterize("-")}" %><br>
+	<% else %>
+		<ui>
+		<% name.each do |name_li| %>
+			<li><%= link_to name_li, "##{name_li.parameterize("-")}" %></li>
+		<% end %>
+		</ui>
+	<% end %>
+<% end %>
+
+<%= link_to "", "#", name: titel_name[0].parameterize("-") %>
 <%= content_tag :h2, "Bootstrap Alert" %>
 <hr>
 	<%= bootstrap_alert { "Test" } %>
@@ -22,17 +28,17 @@
 	<%= bootstrap_alert(dismissible: true) { "Test" } %>
 	<%= bootstrap_alert(id: "foo", class: "bar") { "Test" } %>
 
-<a name="bootstrap-form"></a>
+<%= link_to "", "#", name: titel_name[1].parameterize("-") %>
 <%= content_tag :h2, "Bootstrap Form" %>
 <hr>
 
-<a name="bootstrap-form-forms"></a>
+<%= link_to "", "#", name: titel_name[2][0].parameterize("-") %>
 <%= content_tag :h3, "Forms" %>
 	<%= bootstrap_form_for(@user) { |f| nil } %>
 	<%= bootstrap_form_for(@user, layout: :horizontal) { |f| nil } %>
 	<%= bootstrap_form_for(@user, layout: :horizontal, html: { id: "foo", class: "bar" }) { |f| nil } %>
 
-<a name="bootstrap-form-base-controls"></a>
+<%= link_to "", "#", name: titel_name[2][1].parameterize("-") %>
 <%= content_tag :h3, "Base controls" %>
 	<%= bootstrap_form_for(@user) do |f| %>
 		<%= f.text_field :name %>
@@ -52,7 +58,7 @@
 		<%= f.text_field :name, label: "With input group", input_group: { type: :right_char, value: ".com" } %>
 	<% end %>
 
-<a name="bootstrap-form-base-controls-in-horizontal-form"></a>
+<%= link_to "", "#", name: titel_name[2][2].parameterize("-") %>
 <%= content_tag :h3, "Base controls in horizontal form" %>
 	<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
 		<%= f.text_field :name %>
@@ -71,14 +77,28 @@
 		<%= f.text_field :name, label: "With help block", help_block: "Text for help block" %>
 		<%= f.text_field :name, label: "With input group", input_group: { type: :right_char, value: ".com" } %>
 	<% end %>
+
+<%= link_to "", "#", name: titel_name[2][3].parameterize("-") %>
+<%= content_tag :h3, "Check box and radio" %>
+	<%= bootstrap_form_for(@user) do |f| %>
+		<%= f.check_box :name, label: "Label text" %>
+		<%= f.check_box :name, label: "Label text", form_group_label: "With my form group label" %>
+	<% end %>
+
+<%= link_to "", "#", name: titel_name[2][4].parameterize("-") %>
+<%= content_tag :h3, "Check box and radio in horizontal form" %>
+	<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
+		<%= f.check_box :name, label: "Label text" %>
+		<%= f.check_box :name, label: "Label text", form_group_label: "With my form group label" %>
+	<% end %>
 	
-<a name="bootstrap-glyphicon"></a>
+<%= link_to "", "#", name: titel_name[3].parameterize("-") %>
 <%= content_tag :h2, "Bootstrap Glyphicon" %>
 <hr>
 	<%= bootstrap_glyphicon("thumbs-up") %><br>
 	<%= bootstrap_glyphicon("thumbs-up", id: "foo", class: "bar") %>
 
-<a name="bootstrap-grid-system"></a>
+<%= link_to "", "#", name: titel_name[4].parameterize("-") %>
 <%= content_tag :h2, "Bootstrap Grid System" %>
 <hr>
 	<%= bootstrap_row_with_col { content_tag :h2, "Bootstrap row" } %>

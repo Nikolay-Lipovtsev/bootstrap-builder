@@ -10,8 +10,6 @@ module BootstrapBuilder
         include BootstrapBuilder::Helpers::Forms::ControlListHelper
         include BootstrapBuilder::Helpers::Forms::OptionHelper
         include BootstrapBuilder::Helpers::Forms::WrapperHelper
-                                
-        
       end
     end
   end

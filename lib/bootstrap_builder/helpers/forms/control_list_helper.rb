@@ -7,7 +7,7 @@ module BootstrapBuilder
                                   number_field password_field phone_field range_field search_field telephone_field 
                                   text_area text_field time_field url_field week_field}
                                   
-        CHECK_BOX_AND_RADIO_HELPERS = %{check_box radio_button}
+        CHECKBOX_AND_RADIO_HELPERS = %w{check_box radio_button}
         
         COLLECTION_HELPERS = %w{collection_check_boxes collection_radio_buttons}
       end
