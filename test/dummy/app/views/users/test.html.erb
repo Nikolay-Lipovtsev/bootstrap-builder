@@ -71,7 +71,7 @@
 		<%= f.text_field :name, label: "Disabled field", disabled: true %>
 		<%= f.text_field :name, label: "Readonly field", readonly: true %>
 		<%= f.text_field :name, label: "With my placeholder", placeholder: "My text" %>
-		<%= f.text_field :name, label: "Control size", size: "lg" %>
+		<%= f.text_field :name, label: "Control size", size: "lg", grid_system: "sm" %>
 		<%= f.text_field :name, label: "Control style", style: "success" %>
 		<%= f.text_field :name, label: "With icon", icon: "ok" %>
 		<%= f.text_field :name, label: "With help block", help_block: "Text for help block" %>
@@ -83,6 +83,13 @@
 	<%= bootstrap_form_for(@user) do |f| %>
 		<%= f.check_box :name, label: "Label text" %>
 		<%= f.check_box :name, label: "Label text", form_group_label: "With my form group label" %>
+		<%= f.check_box :name, label: "Label text", form_group_label: "With invisible form group label", invisible_label: true %>
+		<%= f.check_box :name, label: "Label text", form_group_label: "Without form group label", label_disabled: true %>
+		<%= f.check_box :name, label: "With my label class", label_class: "my-label-class" %>
+		<%= f.check_box :name, label: "With my control class", control_class: "my-control-class" %>
+		<%= f.check_box :name, label: "With my form group class", form_group_class: "my-form-group-class" %>
+		<%= f.check_box :name, label: "Disabled field", disabled: true %>
+		<%= f.check_box :name, label: "With help block", help_block: "Text for help block" %>
 	<% end %>
 
 <%= link_to "", "#", name: titel_name[2][4].parameterize("-") %>
@@ -90,6 +97,13 @@
 	<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
 		<%= f.check_box :name, label: "Label text" %>
 		<%= f.check_box :name, label: "Label text", form_group_label: "With my form group label" %>
+		<%= f.check_box :name, label: "Label text", form_group_label: "With invisible form group label", invisible_label: true %>
+		<%= f.check_box :name, label: "Label text", form_group_label: "Without form group label", label_disabled: true %>
+		<%= f.check_box :name, label: "With my label class", label_class: "my-label-class" %>
+		<%= f.check_box :name, label: "With my control class", control_class: "my-control-class" %>
+		<%= f.check_box :name, label: "With my form group class", form_group_class: "my-form-group-class" %>
+		<%= f.check_box :name, label: "Disabled field", disabled: true %>
+		<%= f.check_box :name, label: "With help block", help_block: "Text for help block" %>
 	<% end %>
 	
 <%= link_to "", "#", name: titel_name[3].parameterize("-") %>

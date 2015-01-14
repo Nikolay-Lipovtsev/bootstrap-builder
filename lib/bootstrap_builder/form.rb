@@ -64,7 +64,7 @@ module BootstrapBuilder
         help            = help_block options
         error           = error_message method_name, options
         icon            = icon_block options
-        control         = super method_name, options.slice(:class, :disabled, :placeholder, :readonly, :rows)
+        control         = super method_name, options.slice(:class, :disabled, :id, :placeholder, :readonly, :rows)
         control         = [control, icon, help, error].compact.join.html_safe
         label           = label method_name, options[:label], options
         form_group label, control, options
@@ -81,12 +81,14 @@ module BootstrapBuilder
         error             = error_message method_name, options
         form_group_label  = label method_name, options[:form_group_label], options if options[:form_group_label]
         options[:class]   = options[:control_class]
-        control           = super method_name, *args.map { |a| a.is_a?(Hash) ? options.slice(:class) : a }
+        control           = super method_name, *args.map { |a| a.is_a?(Hash) ? options.slice(:class, :disabled, :id) : a }
         control           = [control, options[:label]].join.html_safe
+        options[:class]   = options[:label_class]
         options[:class]   = [options[:label_class], "#{helper_name}-inline"].compact.join(" ") if options[:inline]
         control           = label_tag nil, control, options.slice(:class)
         control           = checkbox_and_radio_block helper_name, control, options
         control           = [control, help, error].join.html_safe
+        options[:form_group_disabled] = true unless options[:layout] == "horizontal"
         form_group form_group_label, control, options
       end
     end

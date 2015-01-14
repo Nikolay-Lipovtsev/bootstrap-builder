@@ -32,10 +32,11 @@ module BootstrapBuilder
         end
       
         def horizontal_form_group(label, content, options = {})
-          grid_system_options              = {}
-          grid_system_options[:offset_col] = options.delete(:offset_control_col) || 2 unless label
-          grid_system_options[:col]        = options.delete(:control_col) || 10
-          content                          = bootstrap_col(grid_system_options) { content }
+          grid_system_options               = {}
+          grid_system_options[:offset_col]  = options.delete(:offset_control_col) || 2 unless label
+          grid_system_options[:col]         = options.delete(:control_col) || 10
+          grid_system_options[:grid_system] = options.delete(:grid_system)
+          content                           = bootstrap_col(grid_system_options) { content }
           form_group_builder(options) { [label, content].compact.join.html_safe }
         end
       end
