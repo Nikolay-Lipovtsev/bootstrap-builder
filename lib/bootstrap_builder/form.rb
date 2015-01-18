@@ -101,7 +101,7 @@ module BootstrapBuilder
     
     def checkbox_and_radio_block(helper_name, control, options)
       classes = [helper_name, options.delete(:disabled)].compact.join(" ")
-      return content_tag(:div, control, class: classes) unless options[:layout] == "inline"
+      return content_tag(:div, control, class: classes) unless options[:inline]
       control
     end
   end

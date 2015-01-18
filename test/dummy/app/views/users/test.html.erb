@@ -56,6 +56,7 @@
 		<%= f.text_field :name, label: "With icon", icon: "ok" %>
 		<%= f.text_field :name, label: "With help block", help_block: "Text for help block" %>
 		<%= f.text_field :name, label: "With input group", input_group: { type: :right_char, value: ".com" } %>
+		<%= f.text_field :name, label: "With my control col", control_col: 4 %>
 	<% end %>
 
 <%= link_to "", "#", name: titel_name[2][2].parameterize("-") %>
@@ -76,6 +77,7 @@
 		<%= f.text_field :name, label: "With icon", icon: "ok" %>
 		<%= f.text_field :name, label: "With help block", help_block: "Text for help block" %>
 		<%= f.text_field :name, label: "With input group", input_group: { type: :right_char, value: ".com" } %>
+		<%= f.text_field :name, label: "With my control col", label_col: 6, control_col: 4 %>
 	<% end %>
 
 <%= link_to "", "#", name: titel_name[2][3].parameterize("-") %>
@@ -90,6 +92,9 @@
 		<%= f.check_box :name, label: "With my form group class", form_group_class: "my-form-group-class" %>
 		<%= f.check_box :name, label: "Disabled field", disabled: true %>
 		<%= f.check_box :name, label: "With help block", help_block: "Text for help block" %>
+		<%= f.check_box :name, label: "Option one", inline: true %>
+		<%= f.check_box :name, label: "Option two", inline: true %>
+		<%= f.check_box :name, label: "Option tree", inline: true %>
 	<% end %>
 
 <%= link_to "", "#", name: titel_name[2][4].parameterize("-") %>
@@ -104,6 +109,9 @@
 		<%= f.check_box :name, label: "With my form group class", form_group_class: "my-form-group-class" %>
 		<%= f.check_box :name, label: "Disabled field", disabled: true %>
 		<%= f.check_box :name, label: "With help block", help_block: "Text for help block" %>
+		<%= f.check_box :name, label: "Option one", inline: true %>
+		<%= f.check_box :name, label: "Option two", inline: true %>
+		<%= f.check_box :name, label: "Option tree", inline: true %>
 	<% end %>
 	
 <%= link_to "", "#", name: titel_name[3].parameterize("-") %>
