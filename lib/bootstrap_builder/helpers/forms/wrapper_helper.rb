@@ -11,19 +11,15 @@ module BootstrapBuilder
       
         def form_group(label, content, options = {})
           @form_group_disabled = true
-          if options[:layout] == "horizontal"
-            horizontal_form_group(label, content, options) { yield }
-          else 
-            base_form_group(label, content, options) { yield }
-          end
+          base_form_group(label, content, options) { yield }
         end
       
         private
       
         def form_group_builder(options = {})
           return yield if options.delete(:form_group_disabled)
-          options[:class] = ["form-group", options.delete(:form_group_class)].compact.join " "
-          
+          options[:class] = [options.delete(:form_group_class), "form-group"].compact.join " "
+          options[:id]    = [options.delete(:form_group_id)].compact.join " "
           content_tag :div, yield, options.slice(*BASE_OPTIONS)
         end
       
@@ -32,19 +28,15 @@ module BootstrapBuilder
           grid_system_options[:offset_col]  = options.delete(:offset_control_col)
           grid_system_options[:col]         = options.delete(:control_col)
           grid_system_options[:grid_system] = options.delete(:grid_system)
-          
+          if options[:layout] == "horizontal"
+            grid_system_options[:offset_col] ||= 2 unless label
+            grid_system_options[:col] ||= 10
+            content = bootstrap_col(grid_system_options) { content }
+          else
+            base_form_group_with_any_grid_system_options = true if grid_system_options[:col] || grid_system_options[:offset_col]
+          end
           content = form_group_builder(options) { [label, content].compact.join.html_safe }
-          bootstrap_row_with_col(options) { content } if options[:control_col]
-        end
-      
-        def horizontal_form_group(label, content, options = {})
-          grid_system_options               = {}
-          grid_system_options[:offset_col]  = options.delete(:offset_control_col) || 2 unless label
-          grid_system_options[:col]         = options.delete(:control_col) || 10
-          grid_system_options[:grid_system] = options.delete(:grid_system)
-          
-          content                           = bootstrap_col(grid_system_options) { content }
-          form_group_builder(options) { [label, content].compact.join.html_safe }
+          base_form_group_with_any_grid_system_options ? bootstrap_row_with_col(grid_system_options) { content } : content
         end
       end
     end

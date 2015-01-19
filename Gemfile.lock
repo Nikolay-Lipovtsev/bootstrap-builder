@@ -1,12 +1,3 @@
-GIT
-  remote: https://github.com/twbs/bootstrap-sass.git
-  revision: 2dd665f4deec410fc5382e5adb95efea58c8e591
-  branch: next
-  specs:
-    bootstrap-sass (3.3.1.0)
-      autoprefixer-rails (~> 5.0)
-      sass (~> 3.2)
-
 PATH
   remote: .
   specs:
@@ -52,11 +43,10 @@ GEM
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
     arel (6.0.0)
-    autoprefixer-rails (5.0.0.1)
-      execjs
+    bootstrap-sass (3.3.1.0)
+      sass (~> 3.2)
     builder (3.2.2)
     erubis (2.7.0)
-    execjs (2.2.2)
     globalid (0.3.0)
       activesupport (>= 4.1.0)
     hike (1.2.3)
@@ -132,7 +122,7 @@ PLATFORMS
 
 DEPENDENCIES
   bootstrap-builder!
-  bootstrap-sass!
+  bootstrap-sass (~> 3.3.1)
   jquery-rails
   sass-rails (>= 3.2)
   sqlite3 (~> 1.3)

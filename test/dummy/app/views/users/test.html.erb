@@ -56,7 +56,7 @@
 		<%= f.text_field :name, label: "With icon", icon: "ok" %>
 		<%= f.text_field :name, label: "With help block", help_block: "Text for help block" %>
 		<%= f.text_field :name, label: "With input group", input_group: { type: :right_char, value: ".com" } %>
-		<%= f.text_field :name, label: "With my control col", control_col: 4 %>
+		<%= f.text_field :name, label: "With my control col", control_col: 4, offset_control_col: 6 %>
 	<% end %>
 
 <%= link_to "", "#", name: titel_name[2][2].parameterize("-") %>
