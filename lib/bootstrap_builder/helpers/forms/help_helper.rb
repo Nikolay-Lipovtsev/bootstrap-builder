@@ -4,7 +4,7 @@ module BootstrapBuilder
       module HelpHelper # :nodoc:
       
         def help_block(options = {})
-          content_tag :p, options[:help_block], class: "help-block" if options[:help_block]
+          content_tag :p, options.delete(:help_block), class: "help-block" if options[:help_block]
         end
       end
     end

@@ -103,7 +103,7 @@ module BootstrapBuilder
         control                       = ""
         checked, options[:checked]    = options[:checked], nil if options[:checked]
         options[:multiple]            = true if helper == "collection_check_boxes"
-        options[:form_group_disabled] = true
+        options[:form_group_disabled], options[:form_group_col_disabled], options[:error_disabled] = true, true, true
         collection.each do |object|
           options[:checked], checked = true, nil if (checked && object.send(value_method) && checked.to_s == object.send(value_method).to_s) || checked == true
           options[:label] = object.send text_method
@@ -111,13 +111,25 @@ module BootstrapBuilder
           helper == "collection_check_boxes" ? control << check_box(method_name, options, tag_value, nil) : control << radio_button(method_name, tag_value, options)
           options[:checked] = false
         end
-        options[:form_group_disabled] = false
+        options[:form_group_disabled], options[:form_group_col_disabled], options[:error_disabled] = false, false, false
         if helper == "collection_check_boxes"
           options[:value] = ""
           control << hidden_field(method_name, options)
         end
+        control = [control, help, error].join.html_safe
         form_group form_group_label, control, options
       end
+    end
+    
+    def select(method_name, choices = nil, select_options = {}, options = {}, &block)
+      base_options method_name, options
+      base_control_options method_name, options
+      help              = help_block options
+      error             = error_message method_name, options
+      form_group_label  = label method_name, options.delete(:form_group_label), options if options[:form_group_label]
+      control           = super method_name, choices, select_options, options.slice(:class, :disabled, :placeholder, :readonly, :rows), &block
+      control           = [control, help, error].compact.join.html_safe
+      form_group form_group_label, control, options
     end
     
     private
