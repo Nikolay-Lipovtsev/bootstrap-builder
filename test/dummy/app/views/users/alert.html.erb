@@ -1,9 +1,0 @@
-<%= bootstrap_row_with_col { content_tag :h1, "Bootstrap Alerts" } %>
-<hr>
-
-<%= bootstrap_row_with_col do %>
-	<%= bootstrap_alert { "Test" } %>
-	<%= bootstrap_alert("success") { "Test" } %>
-	<%= bootstrap_alert(dismissible: true) { "Test" } %>
-	<%= bootstrap_alert(id: "foo", class: "bar") { "Test" } %>
-<% end %>

@@ -81,7 +81,7 @@ module BootstrapBuilder
         error             = error_message method_name, options
         form_group_label  = label method_name, options[:form_group_label], options if options[:form_group_label]
         options[:class]   = options[:control_class]
-        control           = super method_name, *args.map { |a| a.is_a?(Hash) ? options.slice(:class, :disabled, :id) : a }
+        control           = super method_name, *args.map { |a| a.is_a?(Hash) ? options.slice(:class, :disabled, :id, :multiple) : a }
         control           = [control, options[:label]].join.html_safe
         options[:class]   = options[:label_class]
         options[:class]   = [options[:label_class], "#{helper_name}-inline"].compact.join(" ") if options[:inline]
@@ -89,6 +89,33 @@ module BootstrapBuilder
         control           = checkbox_and_radio_block helper_name, control, options
         control           = [control, help, error].join.html_safe
         options[:form_group_disabled] = true unless options[:layout] == "horizontal"
+        form_group form_group_label, control, options
+      end
+    end
+    
+    COLLECTION_HELPERS.each do |helper|
+      define_method(helper) do |method_name, collection, value_method, text_method, *args|
+        options = args.detect { |a| a.is_a?(Hash) } || {}
+        base_options method_name, options
+        help                          = help_block options
+        error                         = error_message method_name, options
+        form_group_label              = label method_name, options.delete(:form_group_label), options if options[:form_group_label]
+        control                       = ""
+        checked, options[:checked]    = options[:checked], nil if options[:checked]
+        options[:multiple]            = true if helper == "collection_check_boxes"
+        options[:form_group_disabled] = true
+        collection.each do |object|
+          options[:checked], checked = true, nil if (checked && object.send(value_method) && checked.to_s == object.send(value_method).to_s) || checked == true
+          options[:label] = object.send text_method
+          tag_value = value_method ? object.send(value_method) : "1"
+          helper == "collection_check_boxes" ? control << check_box(method_name, options, tag_value, nil) : control << radio_button(method_name, tag_value, options)
+          options[:checked] = false
+        end
+        options[:form_group_disabled] = false
+        if helper == "collection_check_boxes"
+          options[:value] = ""
+          control << hidden_field(method_name, options)
+        end
         form_group form_group_label, control, options
       end
     end

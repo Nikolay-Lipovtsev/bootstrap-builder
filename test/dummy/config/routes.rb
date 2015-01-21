@@ -54,13 +54,7 @@ Rails.application.routes.draw do
   #     resources :products
   #   end
   
-  #resources :users
-  
-  get 'users',                    to: 'users#new'
-  get 'users/alert',              to: 'users#alert'
-  get 'users/form',               to: 'users#form'
-  get 'users/form-base-control',  to: 'users#form_base_control'
-  get 'users/glyphicon',          to: 'users#glyphicon'
-  get 'users/grid-system',        to: 'users#grid_system'
-  get 'users/test',               to: 'users#test'
+  root 'users#test'
+  get 'users/test', to: 'users#test'
+  resources :users
 end

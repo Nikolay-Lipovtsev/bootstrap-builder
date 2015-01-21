@@ -1,5 +1,5 @@
 
-<% titel_name = ["Bootstrap Alert", "Bootstrap Form", ["Forms", "Base controls", "Base controls in horizontal form", "Checkbox and radio", "Checkbox and radio in horizontal form"], "Bootstrap Glyphicon", "Bootstrap Grid System"] %>
+<% titel_name = ["Bootstrap Alert", "Bootstrap Form", ["Forms", "Base controls", "Base controls in horizontal form", "Checkbox and radio", "Checkbox and radio in horizontal form", "Collections"], "Bootstrap Glyphicon", "Bootstrap Grid System"] %>
 
 <a name="top"></a>
 <%= content_tag :h1, "Bootstrap Builder tests" %>
@@ -114,6 +114,12 @@
 		<%= f.check_box :name, label: "Option tree", inline: true %>
 	<% end %>
 	
+<%= link_to "", "#", name: titel_name[2][3].parameterize("-") %>
+<%= content_tag :h3, "Check box and radio" %>
+	<%= bootstrap_form_for(@user) do |f| %>
+		<%= f.collection_check_boxes :id, User.all, :id, :name  %>
+	<% end %>
+
 <%= link_to "", "#", name: titel_name[3].parameterize("-") %>
 <%= content_tag :h2, "Bootstrap Glyphicon" %>
 <hr>

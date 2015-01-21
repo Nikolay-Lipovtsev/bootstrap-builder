@@ -1,26 +1,57 @@
 class UsersController < ApplicationController
   
+  def test
+    new
+  end
+  
+  def index
+    @users = User.all
+  end
+  
+  def show
+    @user = User.find(params[:id])
+  end
+  
   def new
     @user = User.new
   end
   
-  def alert
-    new
+  def edit
+    @user = User.find(params[:id])
   end
   
-  def form
-    new
+  def create
+    @user = User.new(user_params)
+    
+    if @user.save
+      @user.save
+      redirect_to @user
+    else
+      render 'new'
+    end
   end
   
-  def form_base_control
-    new
+  def update
+    @user = User.find(params[:id])
+ 
+    if @user.update(user_params)
+      redirect_to @user
+    else
+      render 'edit'
+    end
   end
   
-  def grid_system
-    new
+  def destroy
+    @user = User.find(params[:id])
+    @user.destroy
+
+    redirect_to users_path
   end
   
-  def test
-    new
+  private
+  
+  def user_params
+    params.require(:user).permit(:name, :email, user_ids: [])
   end
+  
 end
