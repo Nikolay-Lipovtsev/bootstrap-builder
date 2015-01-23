@@ -127,6 +127,10 @@
 	<%= bootstrap_form_for(@user) do |f| %>
 		<%= f.collection_check_boxes :id, User.all, :id, :name %>
 		<%= f.collection_check_boxes :id, User.all, :id, :name, form_group_label: "With my form group label" %>
+		<%= f.collection_check_boxes :id, User.all, :id, :name, form_group_label: "With invisible form group label", invisible_label: true %>
+		<%= f.collection_check_boxes :id, User.all, :id, :name, form_group_label: "Without form group label", label_disabled: true %>
+		<%= f.collection_check_boxes :id, User.all, :id, :name, form_group_label: "With my label class", label_class: "my-label-class" %>
+		<%= f.collection_check_boxes :id, User.all, :id, :name, form_group_label: "With my form group class", form_group_class: "my-form-group-class" %>
 		<%= f.collection_check_boxes :id, User.all, :id, :name, form_group_label: "With help block", help_block: "Text for help block" %>
 		<%= f.collection_check_boxes :id, User.all, :id, :name, inline: true %>
 		<%= f.collection_radio_buttons :id, User.all, :id, :name %>
@@ -139,6 +143,10 @@
 	<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
 		<%= f.collection_check_boxes :id, User.all, :id, :name %>
 		<%= f.collection_check_boxes :id, User.all, :id, :name, form_group_label: "With my form group label" %>
+		<%= f.collection_check_boxes :id, User.all, :id, :name, form_group_label: "With invisible form group label", invisible_label: true %>
+		<%= f.collection_check_boxes :id, User.all, :id, :name, form_group_label: "Without form group label", label_disabled: true %>
+		<%= f.collection_check_boxes :id, User.all, :id, :name, form_group_label: "With my label class", label_class: "my-label-class" %>
+		<%= f.collection_check_boxes :id, User.all, :id, :name, form_group_label: "With my form group class", form_group_class: "my-form-group-class" %>
 		<%= f.collection_check_boxes :id, User.all, :id, :name, form_group_label: "With help block", help_block: "Text for help block" %>
 		<%= f.collection_check_boxes :id, User.all, :id, :name, inline: true %>
 		<%= f.collection_radio_buttons :id, User.all, :id, :name %>
@@ -150,6 +158,7 @@
 <%= content_tag :h3, titel_name_item %>
 	<%= bootstrap_form_for(@user) do |f| %>
 		<%= f.select(:id, User.all.collect { |p| [ p.name, p.id ] }, {}, { control_col: 4 }) %>
+		<%= f.date_select(:id) %>
 	<% end %>
 
 <% titel_name_item = titel_name[3] %>

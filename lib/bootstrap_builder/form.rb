@@ -126,10 +126,25 @@ module BootstrapBuilder
       base_control_options method_name, options
       help              = help_block options
       error             = error_message method_name, options
-      form_group_label  = label method_name, options.delete(:form_group_label), options if options[:form_group_label]
       control           = super method_name, choices, select_options, options.slice(:class, :disabled, :placeholder, :readonly, :rows), &block
       control           = [control, help, error].compact.join.html_safe
-      form_group form_group_label, control, options
+      label             = label method_name, options[:label], options
+      form_group label, control, options
+    end
+    
+    DATE_SELECT_HELPERS.each do |helper|
+      define_method(helper) do |object_name, method, options, html_options|
+        options = args.detect { |a| a.is_a?(Hash) } || {}
+        base_options method_name, options
+        base_control_options method_name, options
+        help              = help_block options
+        error             = error_message method_name, options
+        options[:class]   = [options[:class], "bootstrap-builder-#{helper.gsub("_", "-")}"].compact.join " "
+        control           = super object_name, method, options.slice(:class, :disabled, :placeholder, :readonly, :rows), html_options
+        control           = [control, help, error].compact.join.html_safe
+        label             = label method_name, options[:label], options
+        form_group form_group_label, control, options
+      end
     end
     
     private

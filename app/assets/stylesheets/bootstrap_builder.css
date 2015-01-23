@@ -1,0 +1,6 @@
+select.bootstrap-builder-date-select,
+select.bootstrap-builder-time-select,
+select.bootstrap-builder-datetime-select {
+	display: inline-block;
+	width: auto;
+}

@@ -10,6 +10,8 @@ module BootstrapBuilder
         CHECKBOX_AND_RADIO_HELPERS = %w{check_box radio_button}
         
         COLLECTION_HELPERS = %w{collection_check_boxes collection_radio_buttons}
+        
+        DATE_SELECT_HELPERS = %w{date_select time_select datetime_select}
       end
     end
   end
