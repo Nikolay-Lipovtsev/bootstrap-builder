@@ -114,7 +114,7 @@ module BootstrapBuilder
         options[:form_group_disabled], options[:form_group_col_disabled], options[:error_disabled] = false, false, false
         if helper == "collection_check_boxes"
           options[:value] = ""
-          control << hidden_field(method_name, options)
+          control << hidden_field(method_name, multiple: true)
         end
         control = [control, help, error].join.html_safe
         form_group form_group_label, control, options

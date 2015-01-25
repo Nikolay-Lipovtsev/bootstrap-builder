@@ -1,5 +1,8 @@
 
-<% titel_name = ["Bootstrap Alert", "Bootstrap Form", ["Forms", "Base controls", "Base controls in horizontal form", "Checkbox and radio", "Checkbox and radio in horizontal form", "Collections", "Collections in horizontal form", "Select", "Select in horizontal form", "Date select", "Date select in horizontal form"], "Bootstrap Glyphicon", "Bootstrap Grid System"] %>
+<% titel_name = 	["Bootstrap Alert", "Bootstrap Button", "Bootstrap Form", ["Forms", "Base controls", 
+					"Base controls in horizontal form", "Checkbox and radio", "Checkbox and radio in horizontal form", 
+					"Collections", "Collections in horizontal form", "Select", "Select in horizontal form", 
+					"Date select", "Date select in horizontal form"], "Bootstrap Glyphicon", "Bootstrap Grid System"] %>
 
 <a name="top"></a>
 <%= content_tag :h1, "Bootstrap Builder tests" %>
@@ -33,15 +36,85 @@
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h2, titel_name_item %>
 <hr>
+	<h3><br>Styles</h3>
+	<%= button_tag "Default" %>
+	<%= button_tag "Primary", style: "primary" %>
+	<%= button_tag "Success", style: "success" %>
+	<%= button_tag "Info", style: "info" %>
+	<%= button_tag "Warning", style: "warning" %>
+	<%= button_tag "Danger", style: "danger" %>
+	<%= button_tag "Link", style: "link" %>
+	
+	<h3><br>Sizes</h3>
+	<p>
+		<%= button_tag "Large button", style: "primary", size: "lg" %>
+		<%= button_tag "Large button", size: "lg" %>
+	</p>
+	<p>
+		<%= button_tag "Default button", style: "primary" %>
+		<%= button_tag "Default button" %>
+	</p>
+	<p>
+		<%= button_tag "Small button", style: "primary", size: "sm" %>
+		<%= button_tag "Small button", size: "sm" %>
+	</p>
+	<p>
+		<%= button_tag "Extra small button", style: "primary", size: "xs" %>
+		<%= button_tag "Extra small button", size: "xs" %>
+	</p>
+	<p>
+		<%= button_tag "Block level button", style: "primary", col: 12, size: "lg" %>
+	<p>
+	</p>
+		<%= button_tag "Block level button", col: 12, size: "lg" %>
+	</p>
+	
+	<h3><br>Active state</h3>
+	<h4>Button element</h4>
+	<%= button_tag "Primary button", style: "primary", active: true %>
+	<%= button_tag "Button", active: true %>
 
-<% titel_name_item = titel_name[2][0] %>
+	<h4>Anchor element</h4>
+	<%= button_link_tag "Primary link", new_user_path, style: "primary", active: true %>
+	<%= button_link_tag "Link", new_user_path, active: true %>
+
+	<h4>Submit element</h4>
+	<%= submit_tag "Primary submit", style: "primary", active: true %>
+	<%= submit_tag "Submit", active: true %>
+	
+	
+	<h3><br>Disabled state</h3>
+	<h4>Button element</h4>
+	<%= button_tag "Primary button", style: "primary", disabled: true %>
+	<%= button_tag "Button", disabled: true %>
+
+	<h4>Anchor element</h4>
+	<%= button_link_tag "Primary link", new_user_path, style: "primary", disabled: true %>
+	<%= button_link_tag "Link", new_user_path, disabled: true %>
+
+	<h4>Submit element</h4>
+	<%= submit_tag "Primary submit", style: "primary", disabled: true %>
+	<%= submit_tag "Submit", disabled: true %>
+	
+	<h4><br>Button tags</h4>
+	<%= button_link_tag "Link", new_user_path %>
+	<%= button_tag "Button" %>
+	<%= button_input_tag "Input" %>
+	<%= submit_tag "Submit" %>
+
+<% titel_name_item = titel_name[2] %>
+<%= link_to "", "#", name: titel_name_item.parameterize("-") %>
+<%= content_tag :h2, titel_name_item %>
+<hr>
+
+<% titel_name_item = titel_name[3][0] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
 	<%= bootstrap_form_for(@user) { |f| nil } %>
 	<%= bootstrap_form_for(@user, layout: :horizontal) { |f| nil } %>
 	<%= bootstrap_form_for(@user, layout: :horizontal, html: { id: "foo", class: "bar" }) { |f| nil } %>
 
-<% titel_name_item = titel_name[2][1] %>
+<% titel_name_item = titel_name[3][1] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
 	<%= bootstrap_form_for(@user) do |f| %>
@@ -63,7 +136,7 @@
 		<%= f.text_field :name, label: "With my control col", control_col: 4, offset_control_col: 6 %>
 	<% end %>
 
-<% titel_name_item = titel_name[2][2] %>
+<% titel_name_item = titel_name[3][2] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
 	<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
@@ -85,7 +158,7 @@
 		<%= f.text_field :name, label: "With my control col", label_col: 6, control_col: 4 %>
 	<% end %>
 
-<% titel_name_item = titel_name[2][3] %>
+<% titel_name_item = titel_name[3][3] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
 	<%= bootstrap_form_for(@user) do |f| %>
@@ -103,7 +176,7 @@
 		<%= f.check_box :name, label: "Option tree", inline: true %>
 	<% end %>
 
-<% titel_name_item = titel_name[2][4] %>
+<% titel_name_item = titel_name[3][4] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
 	<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
@@ -121,7 +194,7 @@
 		<%= f.check_box :name, label: "Option tree", inline: true %>
 	<% end %>
 	
-<% titel_name_item = titel_name[2][5] %>
+<% titel_name_item = titel_name[3][5] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
 	<%= bootstrap_form_for(@user) do |f| %>
@@ -137,7 +210,7 @@
 		<%= f.collection_radio_buttons :id, User.all, :id, :name, inline: true %>
 	<% end %>
 
-<% titel_name_item = titel_name[2][6] %>
+<% titel_name_item = titel_name[3][6] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
 	<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
@@ -153,7 +226,7 @@
 		<%= f.collection_radio_buttons :id, User.all, :id, :name, inline: true %>
 	<% end %>
 
-<% titel_name_item = titel_name[2][7] %>
+<% titel_name_item = titel_name[3][7] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
 	<%= bootstrap_form_for(@user) do |f| %>
@@ -172,7 +245,7 @@
 		<%= f.select :id, User.all.collect { |p| [ p.name, p.id ] }, {}, { label: "With my control col", control_col: 4, offset_control_col: 6 } %>
 	<% end %>
 	
-<% titel_name_item = titel_name[2][8] %>
+<% titel_name_item = titel_name[3][8] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
 	<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
@@ -191,7 +264,7 @@
 		<%= f.select :name, User.all.collect { |p| [ p.name, p.id ] }, {}, { label: "With my control col", label_col: 6, control_col: 4 } %>
 	<% end %>
 
-<% titel_name_item = titel_name[2][9] %>
+<% titel_name_item = titel_name[3][9] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
 	<%= bootstrap_form_for(@user) do |f| %>
@@ -212,7 +285,7 @@
 		<%= f.datetime_select :name %>
 	<% end %>
 	
-<% titel_name_item = titel_name[2][10] %>
+<% titel_name_item = titel_name[3][10] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
 	<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
@@ -233,14 +306,14 @@
 		<%= f.datetime_select :name %>
 	<% end %>
 
-<% titel_name_item = titel_name[3] %>
+<% titel_name_item = titel_name[4] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h2, titel_name_item %>
 <hr>
 	<%= bootstrap_glyphicon("thumbs-up") %><br>
 	<%= bootstrap_glyphicon("thumbs-up", id: "foo", class: "bar") %>
 
-<% titel_name_item = titel_name[4] %>
+<% titel_name_item = titel_name[5] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h2, titel_name_item %>
 <hr>
