@@ -5,7 +5,7 @@ module BootstrapBuilder
     # Creates a buttot tag with bootstrap class.
     #
     # === Options
-    # You can use only symbols for the attribute names.
+    # You can use symbols or string for the attribute names.
     # 
     # <tt>:active</tt> if set to true, takes the value of the active state.
     #
@@ -91,7 +91,7 @@ module BootstrapBuilder
     # Creates a link tag with bootstrap button class.
     #
     # === Options
-    # You can use only symbols for the attribute names.
+    # You can use symbols or string for the attribute names.
     # 
     # <tt>:active</tt> if set to true, takes the value of the active state.
     #
@@ -173,7 +173,7 @@ module BootstrapBuilder
     # Creates a submit tag with bootstrap button class.
     #
     # === Options
-    # You can use only symbols for the attribute names.
+    # You can use symbols or string for the attribute names.
     # 
     # <tt>:active</tt> if set to true, takes the value of the active state.
     #
@@ -245,7 +245,7 @@ module BootstrapBuilder
     # Creates a button input tag with bootstrap button class.
     #
     # === Options
-    # You can use only symbols for the attribute names.
+    # You can use symbols or string for the attribute names.
     # 
     # <tt>:active</tt> if set to true, takes the value of the active state.
     #
@@ -317,12 +317,14 @@ module BootstrapBuilder
     def button_block(options = {})
       if [:col, :offset_col].any? {|k| options.key?(k)}
         bootstrap_row_with_col(options.slice(:col, :grid_system, :offset_col, :row_disabled)) { yield }
-      else 
+      else
         yield
       end
     end
     
     def base_button_class(options = {})
+      options.symbolize_keys!
+      
       options[:style] = "btn-#{(options[:style] || "default").to_s}"
       options[:size] = "btn-#{options[:size].to_s}" if options[:size]
       options[:active] = "active" if options[:active]

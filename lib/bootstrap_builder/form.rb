@@ -147,6 +147,33 @@ module BootstrapBuilder
       end
     end
     
+    def button(content_or_options = nil, options = {}, &block)
+      content_is_options = content_or_options.is_a? Hash
+      options, content_or_options = content_or_options, nil if content_is_options
+      button_builder options
+      content_or_options, options = options, nil if content_is_options
+      control = button_tag content_or_options, options, &block
+      form_group nil, control, options
+    end
+    
+    def button_link(name = nil, options = {}, html_options = {}, &block)
+      button_builder html_options
+      control = button_link_tag name, options, html_options, &block
+      form_group nil, control, html_options
+    end
+    
+    def submit(value = nil, options = {})
+      button_builder options
+      control = submit_tag value, options
+      form_group nil, control, options
+    end
+    
+    def button_input(value = nil, options = {})
+      button_builder options
+      control = button_input_tag value, options
+      form_group nil, control, options
+    end
+    
     private
     
     def default_horizontal_label_col
@@ -157,6 +184,12 @@ module BootstrapBuilder
       classes = [helper_name, options.delete(:disabled)].compact.join(" ")
       return content_tag(:div, control, class: classes) unless options[:inline]
       control
+    end
+    
+    def button_builder(options)
+      base_options nil, options
+      options[:class] = options[:control_class] if options[:control_class]
+      options         = options.slice(:active, :class, :col, :style, :size, :disabled)
     end
   end
 end

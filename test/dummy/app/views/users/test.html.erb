@@ -2,7 +2,8 @@
 <% titel_name = 	["Bootstrap Alert", "Bootstrap Button", "Bootstrap Form", ["Forms", "Base controls", 
 					"Base controls in horizontal form", "Checkbox and radio", "Checkbox and radio in horizontal form", 
 					"Collections", "Collections in horizontal form", "Select", "Select in horizontal form", 
-					"Date select", "Date select in horizontal form"], "Bootstrap Glyphicon", "Bootstrap Grid System"] %>
+					"Date select", "Date select in horizontal form", "Button", "Button in horizontal form"], 
+					"Bootstrap Glyphicon", "Bootstrap Grid System"] %>
 
 <a name="top"></a>
 <%= content_tag :h1, "Bootstrap Builder tests" %>
@@ -304,6 +305,40 @@
 		<%= f.date_select :name, label: "With my control col", label_col: 6, control_col: 4 %>
 		<%= f.time_select :name %>
 		<%= f.datetime_select :name %>
+	<% end %>
+
+<% titel_name_item = titel_name[3][11] %>
+<%= link_to "", "#", name: titel_name_item.parameterize("-") %>
+<%= content_tag :h3, titel_name_item %>
+	<%= bootstrap_form_for(@user) do |f| %>
+		<%= f.button %>
+		<%= f.button "With my text" %>
+		<%= f.button "With my control class", control_class: "my-control-class" %>
+		<%= f.button "With my form group class", control_class: "my-form-group-class" %>
+		<%= f.button "Disabled button", disabled: true %>
+		<%= f.button "Button size", size: "lg" %>
+		<%= f.button "Button style", style: "primary" %>
+		<%= f.button "With my control col", control_col: 4, offset_control_col: 6 %>
+		<%= f.button_link "Button link tag", new_user_path %>
+		<%= f.submit "Submit" %>
+		<%= f.button_input "Button input" %>
+	<% end %>
+
+<% titel_name_item = titel_name[3][12] %>
+<%= link_to "", "#", name: titel_name_item.parameterize("-") %>
+<%= content_tag :h3, titel_name_item %>
+	<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
+		<%= f.button %>
+		<%= f.button "With my text" %>
+		<%= f.button "With my control class", control_class: "my-control-class" %>
+		<%= f.button "With my form group class", control_class: "my-form-group-class" %>
+		<%= f.button "Disabled button", disabled: true %>
+		<%= f.button "Button size", size: "lg" %>
+		<%= f.button "Button style", style: "primary" %>
+		<%= f.button "With my control col", control_col: 4, offset_control_col: 6 %>
+		<%= f.button_link "Button link tag", new_user_path %>
+		<%= f.submit "Submit" %>
+		<%= f.button_input "Button input" %>
 	<% end %>
 
 <% titel_name_item = titel_name[4] %>
