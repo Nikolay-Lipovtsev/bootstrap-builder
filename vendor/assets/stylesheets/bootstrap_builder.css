@@ -1,3 +1,9 @@
+label.bootstrap-builder-date-select,
+label.bootstrap-builder-time-select,
+label.bootstrap-builder-datetime-select {
+	display: block;
+}
+
 select.bootstrap-builder-date-select,
 select.bootstrap-builder-time-select,
 select.bootstrap-builder-datetime-select {

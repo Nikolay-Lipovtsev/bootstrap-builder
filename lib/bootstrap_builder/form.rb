@@ -105,9 +105,9 @@ module BootstrapBuilder
         options[:multiple]            = true if helper == "collection_check_boxes"
         options[:form_group_disabled], options[:form_group_col_disabled], options[:error_disabled] = true, true, true
         collection.each do |object|
-          options[:checked], checked = true, nil if (checked && object.send(value_method) && checked.to_s == object.send(value_method).to_s) || checked == true
-          options[:label] = object.send text_method
-          tag_value = value_method ? object.send(value_method) : "1"
+          options[:checked], checked  = true, nil if (checked && object.send(value_method) && checked.to_s == object.send(value_method).to_s) || checked == true
+          options[:label]             = object.send text_method
+          tag_value                   = value_method ? object.send(value_method) : "1"
           helper == "collection_check_boxes" ? control << check_box(method_name, options, tag_value, nil) : control << radio_button(method_name, tag_value, options)
           options[:checked] = false
         end
@@ -133,17 +133,17 @@ module BootstrapBuilder
     end
     
     DATE_SELECT_HELPERS.each do |helper|
-      define_method(helper) do |object_name, method, options, html_options|
-        options = args.detect { |a| a.is_a?(Hash) } || {}
+      define_method(helper) do |method_name, options = {}, html_options = {}|
         base_options method_name, options
         base_control_options method_name, options
-        help              = help_block options
-        error             = error_message method_name, options
-        options[:class]   = [options[:class], "bootstrap-builder-#{helper.gsub("_", "-")}"].compact.join " "
-        control           = super object_name, method, options.slice(:class, :disabled, :placeholder, :readonly, :rows), html_options
-        control           = [control, help, error].compact.join.html_safe
-        label             = label method_name, options[:label], options
-        form_group form_group_label, control, options
+        help                  = help_block options
+        error                 = error_message method_name, options
+        html_options[:class]  = [options.delete(:control_class), options.delete(:class), html_options.delete(:class), "form-control bootstrap-builder-#{helper.gsub("_", "-")}"].compact.join " "
+        control               = super method_name, options, html_options.slice(:class, :disabled, :placeholder, :readonly, :rows)
+        control               = [control, help, error].compact.join.html_safe
+        options[:label_class] = [options[:label_class], "bootstrap-builder-#{helper.gsub("_", "-")}"].compact.join " "
+        label                 = label method_name, options[:label], options
+        form_group label, control, options
       end
     end
     
