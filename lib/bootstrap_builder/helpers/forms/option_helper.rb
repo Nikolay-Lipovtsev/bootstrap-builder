@@ -3,8 +3,8 @@ module BootstrapBuilder
     module Forms
       module OptionHelper # :nodoc:
         
-        BASE_FORM_OPTIONS = [:control_class, :control_col, :invisible_label, :form_group_disabled, :grid_system, 
-                            :label_class, :label_col, :layout, :offset_control_col, :offset_label_col]
+        BASE_FORM_OPTIONS = [:control_class, :control_col, :label_disabled, :invisible_label, :form_group_disabled, :grid_system, 
+                            :label_class, :label_col, :layout, :offset_control_col, :offset_label_col, :row_disabled]
         
         def base_options(method_name, options)
           options ||= {}

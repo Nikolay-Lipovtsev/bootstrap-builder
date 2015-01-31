@@ -1,4 +1,3 @@
-
 <% titel_name = 	["Bootstrap Alert", "Bootstrap Button", "Bootstrap Form", ["Forms", "Base controls", 
 					"Base controls in horizontal form", "Checkbox and radio", "Checkbox and radio in horizontal form", 
 					"Collections", "Collections in horizontal form", "Select", "Select in horizontal form", 
@@ -310,7 +309,16 @@
 <% titel_name_item = titel_name[3][11] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
-	<%= bootstrap_form_for(@user) do |f| %>
+	<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
+		
+		<%= f.form_group_with_label("Test", row_disabled: true) do %>
+			<%= f.button "One" %>
+			<%= f.button "Two" %>
+		<% end %>
+		<%= f.form_group_with_label("Test") do %>
+			<%= f.text_field :name, control_col: 3 %>
+			<%= f.text_field :name, control_col: 4 %>
+		<% end %>
 		<%= f.button %>
 		<%= f.button "With my text" %>
 		<%= f.button "With my control class", control_class: "my-control-class" %>
