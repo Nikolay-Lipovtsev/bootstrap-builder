@@ -134,6 +134,10 @@
 		<%= f.text_field :name, label: "With help block", help_block: "Text for help block" %>
 		<%= f.text_field :name, label: "With input group", input_group: { type: :right_char, value: ".com" } %>
 		<%= f.text_field :name, label: "With my control col", control_col: 4, offset_control_col: 6 %>
+		<%= f.form_group("Form group label") do %>
+			<%= f.text_field :name, control_col: 4 %>
+			<%= f.text_field :name, control_col: 6 %>
+		<% end %>
 	<% end %>
 
 <% titel_name_item = titel_name[3][2] %>
@@ -156,6 +160,10 @@
 		<%= f.text_field :name, label: "With help block", help_block: "Text for help block" %>
 		<%= f.text_field :name, label: "With input group", input_group: { type: :right_char, value: ".com" } %>
 		<%= f.text_field :name, label: "With my control col", label_col: 6, control_col: 4 %>
+		<%= f.form_group("Form group label") do %>
+			<%= f.text_field :name, control_col: 4 %>
+			<%= f.text_field :name, control_col: 6 %>
+		<% end %>
 	<% end %>
 
 <% titel_name_item = titel_name[3][3] %>
@@ -310,15 +318,6 @@
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
 	<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
-		
-		<%= f.form_group_with_label("Test", row_disabled: true) do %>
-			<%= f.button "One" %>
-			<%= f.button "Two" %>
-		<% end %>
-		<%= f.form_group_with_label("Test") do %>
-			<%= f.text_field :name, control_col: 3 %>
-			<%= f.text_field :name, control_col: 4 %>
-		<% end %>
 		<%= f.button %>
 		<%= f.button "With my text" %>
 		<%= f.button "With my control class", control_class: "my-control-class" %>

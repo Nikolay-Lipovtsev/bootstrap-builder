@@ -18,7 +18,7 @@ if ActiveSupport::TestCase.respond_to?(:fixture_path=)
 end
 
 def setup_test_fixture
-  @user = User.new(email: "example@example.com", password: "example")
+  @user = User.new(name: "Ivan Ivanov", email: "example@example.com", password: "example")
 end
 
 def default_form

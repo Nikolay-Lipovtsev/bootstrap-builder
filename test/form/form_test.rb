@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class BaseControlTest < ActionView::TestCase
+class FormTest < ActionView::TestCase
   include BootstrapBuilder::Base
   
   def setup
@@ -18,7 +18,7 @@ class BaseControlTest < ActionView::TestCase
   end
   
   test "inline form" do
-    expected = horizontal_form
+    expected = inline_form
     assert_equal expected, bootstrap_form_for(@user, layout: :inline) { |f| nil }
   end
 end

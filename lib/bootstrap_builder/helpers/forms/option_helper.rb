@@ -24,7 +24,7 @@ module BootstrapBuilder
         def base_control_options(method_name, options)
           options[:class] = [options[:class], "form-control"].compact.join(" ")
           options[:class] = [options[:class], "input-#{options[:size]}"].compact.join(" ") if options[:size] && options[:layout] != "horizontal"
-          options[:placeholder] ||= options[:label] || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if (options[:placeholder] || options["invisible_label"] || options["layout"] == "inline")
+          options[:placeholder] ||= options[:label] || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if options[:placeholder] === true
         end
         
         def checkbox_and_radio_options(options)

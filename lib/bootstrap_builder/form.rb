@@ -84,7 +84,7 @@ module BootstrapBuilder
         control           = super method_name, *args.map { |a| a.is_a?(Hash) ? options.slice(:class, :disabled, :id, :multiple) : a }
         control           = [control, options[:label]].join.html_safe
         options[:class]   = options[:label_class]
-        options[:class]   = [options[:label_class], "#{helper_name}-inline"].compact.join(" ") if options[:inline]
+        options[:class]   = [options[:class], "#{helper_name}-inline"].compact.join(" ") if options[:inline]
         control           = label_tag nil, control, options.slice(:class)
         control           = checkbox_and_radio_block helper_name, control, options
         control           = [control, help, error].join.html_safe

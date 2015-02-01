@@ -14,7 +14,7 @@ gemspec
 # gem 'byebug', group: [:development, :test]
 
 # Use Bootstrap
-gem 'bootstrap-sass', '~> 3.3.1'
+gem 'bootstrap-sass', '~> 3.3.3'
 gem 'sass-rails', '>= 3.2'
 
 # Use jquery as the JavaScript library
