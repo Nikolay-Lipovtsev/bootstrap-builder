@@ -4,21 +4,21 @@ class BaseControlTest < ActionView::TestCase
   include BootstrapBuilder::Base
   
   def setup
-    @user = User.new(email: 'example@example.com', password: 'example')
+    setup_test_fixture
   end
   
-  test "default form" do
-    expected = %{<form role="form" class="new_user" id="new_user" action="/users" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /></form>}
-    assert_equal expected, bootstrap_form_for(@user) { |f| nil }
+  test "default form and text field" do
+    expected = default_form { %{<div class="form-group"><label class="control-label" for="user_name">Name</label><input class="form-control" type="text" name="user[name]" id="user_name"></div>} }
+    assert_equal expected, bootstrap_form_for(@user) { |f| f.text_field :name }
   end
   
-  test "horizontal form" do
-    expected = %{<form role="form" class="form-horizontal" id="new_user" action="/users" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /></form>}
-    assert_equal expected, bootstrap_form_for(@user, layout: :horizontal) { |f| nil }
+  test "horizontal form with" do
+    expected = horizontal_form { %{<div class="form-group"><label class="control-label col-md-2" for="user_name">Name</label><div class="col-md-10"><input class="form-control" type="text" name="user[name]" id="user_name" /></div></div>} }
+    assert_equal expected, bootstrap_form_for(@user, layout: :horizontal) { |f| f.text_field :name }
   end
   
-  test "form with my html options" do
-    expected = %{<form id="foo" class="bar" role="form" action="/users" accept-charset="UTF-8" method="post"><input name="utf8" type="hidden" value="&#x2713;" /></form>}
+  test "form with my html options with" do
+    expected = inline_form { %{<div class="form-group"><label class="control-label" for="user_name">Name</label><input class="form-control" type="text" name="user[name]" id="user_name"></div>} }
     assert_equal expected, bootstrap_form_for(@user, html: { id: "foo", class: "bar" }) { |f| nil }
   end
 end

@@ -14,10 +14,10 @@ module BootstrapBuilder
         end
         
         def form_group_with_label(label = nil, content_or_options = nil, options = {}, &block)
-          @options.merge! form_group_disabled: true, row_disabled: true, label_disabled: true
+          @options.merge! form_group_disabled: true, row_disabled: true, label_disabled: true, col_disabled: true
           options, content_or_options = (content_or_options || {}), capture(&block) if block_given?
-          content_or_options = bootstrap_row { content_or_options } unless options[:row_disabled]
-          @options.merge! form_group_disabled: false, row_disabled: false, invisible_label: false
+          content_or_options = bootstrap_row_with_col { content_or_options } unless options[:row_disabled]
+          @options.merge! form_group_disabled: false, row_disabled: false, invisible_label: false, col_disabled: false
           form_group_wrapper label, content_or_options
         end
         
