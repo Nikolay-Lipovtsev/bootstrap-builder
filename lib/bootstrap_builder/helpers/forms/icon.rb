@@ -3,7 +3,7 @@ require 'bootstrap_builder/glyphicon'
 module BootstrapBuilder
   module Helpers
     module Forms
-      module IconHelper # :nodoc:
+      module Icon # :nodoc:
         
         include BootstrapBuilder::Glyphicon
         

@@ -5,11 +5,11 @@ require 'bootstrap_builder/helpers/forms/wrapper_helper'
 module BootstrapBuilder
   module Helpers
     module Forms
-      module BaseControlHelper # :nodoc:
+      module BaseControl # :nodoc:
         
-        include BootstrapBuilder::Helpers::Forms::ControlListHelper
-        include BootstrapBuilder::Helpers::Forms::OptionHelper
-        include BootstrapBuilder::Helpers::Forms::WrapperHelper
+        include BootstrapBuilder::Helpers::Forms::ControlList
+        include BootstrapBuilder::Helpers::Forms::Option
+        include BootstrapBuilder::Helpers::Forms::Wrapper
       end
     end
   end

@@ -1,7 +1,7 @@
 module BootstrapBuilder
   module Helpers
     module Forms
-      module ErrorHelper # :nodoc:
+      module Error # :nodoc:
       
         def has_error?(method_name, options = {})
           method_name && !(options[:error_disabled]) && @object.respond_to?(:errors) && !(@object.errors[method_name].empty?)

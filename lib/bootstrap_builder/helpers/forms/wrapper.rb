@@ -3,7 +3,7 @@ require 'bootstrap_builder/grid_system'
 module BootstrapBuilder
   module Helpers
     module Forms
-      module WrapperHelper # :nodoc:
+      module Wrapper # :nodoc:
       
         include BootstrapBuilder::GridSystem
       
