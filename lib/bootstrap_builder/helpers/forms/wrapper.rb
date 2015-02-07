@@ -9,31 +9,52 @@ module BootstrapBuilder
           attr_reader :children
           attr_reader :root
         
-          def initialize(root, &block)
-            @root     = root
-            @block    = block
-            @children = []
+          def initialize(root, label_text, content_or_options, options, &block)
+            @root       = root
+            @block      = block
+            @children   = []
+            if block_given?
+              @options  = content_or_options || {}
+              @block    = block
+            else
+              @options  = options || {}
+              @block    = content_or_options
+              block     = content_or_options
+            end
           
             instance_eval(&block)
             root.children << self unless root.nil?
           end
-        
+          
+          def form_group(label_text = nil, content_or_options = nil, options = {}, &block)
+            Wrapper.new(self, label_text, content_or_options, options, &block).compile
+          end
+          
           def compile
-              puts "-- Before --" if root.nil? 
-      
-              if children.empty?
-                puts @block.call
-              else
-                children.map(&:compile)
-              end
-      
-              puts "-- After --"  if root.nil?
+            puts "-- Before --" if root.nil? 
+            
+            if children.empty?
+              puts @block.call
+            else
+              children.map(&:compile)
+            end
+            
+            puts "-- After --"  if root.nil?
+          end
+          
+          private
+          
+          def form_group_builder(content, options)
+            return content if options[:form_group_disabled]
+            options[:class] = [options.delete(:form_group_class), "form-group"].compact.join " "
+            options[:id]    = options.delete(:form_group_id) if options[:form_group_id]
+            content_tag :div, content, options.slice(*BASE_OPTIONS)
           end
         end
       end
       
-      def form_group(&block)
-        Wrapper.new(nil, &block).compile
+      def form_group(label_text = nil, content_or_options = nil, options = {}, &block)
+        Wrapper.new(nil, label_text, content_or_options, options, &block).compile
       end
         
         include BootstrapBuilder::GridSystem
