@@ -3,8 +3,39 @@ require 'bootstrap_builder/grid_system'
 module BootstrapBuilder
   module Helpers
     module Forms
-      module Wrapper # :nodoc:
+      module Wrapper
+        class BaseWrapper # :nodoc:
+        
+          attr_reader :children
+          attr_reader :root
+        
+          def initialize(root, &block)
+            @root     = root
+            @block    = block
+            @children = []
+          
+            instance_eval(&block)
+            root.children << self unless root.nil?
+          end
+        
+          def compile
+              puts "-- Before --" if root.nil? 
       
+              if children.empty?
+                puts @block.call
+              else
+                children.map(&:compile)
+              end
+      
+              puts "-- After --"  if root.nil?
+          end
+        end
+      end
+      
+      def form_group(&block)
+        Wrapper.new(nil, &block).compile
+      end
+        
         include BootstrapBuilder::GridSystem
       
         BASE_OPTIONS = [:id, :class]
