@@ -6,7 +6,9 @@ module BootstrapBuilder
   #
   module GridSystem
     
-    BASE_OPTIONS = [:col, :offset_col, :grid_system, :col_disabled]
+    BASE_OPTIONS = [:class, :id]
+    COL_OPTIONS = [:class, :col, :col_disabled, :grid_system, :id, :offset_col]
+    ROW_OPTIONS = [:class, :id, :row_disabled]
     
     # == Bootstrap row
     #
@@ -31,9 +33,9 @@ module BootstrapBuilder
     def bootstrap_row(options = {})
       options.symbolize_keys!
       
-      return yield if options.delete :row_disabled
-      options[:class] = ["row", options[:class]].compact.join " "
-      content_tag(:div, options) { yield }
+      return yield if options.delete(:row_disabled)
+      options[:class] = ["row", options[:class]].compact.join(" ")
+      content_tag(:div, options.slice(*BASE_OPTIONS)) { yield }
     end
   
     # == Bootstrap column
@@ -68,13 +70,13 @@ module BootstrapBuilder
     def bootstrap_col(options = {})
       options.symbolize_keys!
       
-      grid_system = options.delete :grid_system
-      col         = grid_system_class options.delete(:col) || 12, grid_system
-      offset_col  = grid_system_offset_class options.delete(:offset_col), grid_system
-      return yield if options.delete :col_disabled
+      grid_system = options.delete(:grid_system)
+      col         = grid_system_class((options.delete(:col) || 12), grid_system)
+      offset_col  = grid_system_offset_class(options.delete(:offset_col), grid_system)
+      return yield if options.delete(:col_disabled)
       if col || offset_col
-        options[:class] = [col, offset_col, options[:class]].compact.join " "
-        content_tag(:div, options) { yield }
+        options[:class] = [col, offset_col, options[:class]].compact.join(" ")
+        content_tag(:div, options.slice(*BASE_OPTIONS)) { yield }
       else
         yield
       end
@@ -132,8 +134,8 @@ module BootstrapBuilder
     def bootstrap_row_with_col(options = {})
       options.symbolize_keys!
       
-      col_tag = bootstrap_col(options.slice(*BASE_OPTIONS)) { yield }
-      bootstrap_row(options.except(*BASE_OPTIONS)) { col_tag }
+      col_tag = bootstrap_col(options.slice(*COL_OPTIONS)) { yield }
+      bootstrap_row(options.slice(*ROW_OPTIONS)) { col_tag }
     end
   
     # == Bootstrap grid system class
