@@ -9,8 +9,9 @@ module BootstrapBuilder
           attr_reader :children
           attr_reader :root
           
-          def initialize(root, label, content_or_options, options, &block)
+          def initialize(root, template, label, content_or_options, options, &block)
             @root       = root
+            @template   = template
             @block      = block
             @children   = []
             @label      = label
@@ -27,8 +28,10 @@ module BootstrapBuilder
             root.children << self unless root.nil?
           end
           
+          delegate :content_tag, :label_tag, to: :@template
+          
           def form_group(label = nil, content_or_options = nil, options = {}, &block)
-            WrapperBuilder.new(self, label, content_or_options, options, &block).compile
+            WrapperBuilder.new(self, nil, label, content_or_options, options, &block).compile
           end
           
           def label_block
@@ -63,7 +66,7 @@ module BootstrapBuilder
       
       def form_group(label = nil, content_or_options = nil, options = {}, &block)
         options.merge!(@options.slice(*FORM_GROUP_OPTIONS))
-        WrapperBuilder.new(nil, label, content_or_options, options, &block).compile
+        WrapperBuilder.new(nil, @template, label, content_or_options, options, &block).compile
       end
         
       #def form_group_wrapper(label, content = nil, options = {})
