@@ -67,7 +67,7 @@ module BootstrapBuilder
         control         = super method_name, options.slice(:class, :disabled, :id, :placeholder, :readonly, :rows)
         control         = [control, icon, help, error].compact.join.html_safe
         label           = label method_name, options[:label], options
-        form_group label, control, options
+        form_group label, control, options, true
       end
     end
     
@@ -89,7 +89,7 @@ module BootstrapBuilder
         control           = checkbox_and_radio_block helper_name, control, options
         control           = [control, help, error].join.html_safe
         options[:form_group_disabled] = true unless options[:layout] == "horizontal"
-        form_group form_group_label, control, options
+        form_group form_group_label, control, options, true
       end
     end
     
@@ -117,7 +117,7 @@ module BootstrapBuilder
           control << hidden_field(method_name, multiple: true)
         end
         control = [control, help, error].join.html_safe
-        form_group form_group_label, control, options
+        form_group form_group_label, control, options, true
       end
     end
     
@@ -129,7 +129,7 @@ module BootstrapBuilder
       control           = super method_name, choices, select_options, options.slice(:class, :disabled, :placeholder, :readonly, :rows), &block
       control           = [control, help, error].compact.join.html_safe
       label             = label method_name, options[:label], options
-      form_group label, control, options
+      form_group label, control, options, true
     end
     
     DATE_SELECT_HELPERS.each do |helper|
@@ -143,7 +143,7 @@ module BootstrapBuilder
         control               = [control, help, error].compact.join.html_safe
         options[:label_class] = [options[:label_class], "bootstrap-builder-#{helper.gsub("_", "-")}"].compact.join " "
         label                 = label method_name, options[:label], options
-        form_group label, control, options
+        form_group label, control, options, true
       end
     end
     
@@ -153,7 +153,7 @@ module BootstrapBuilder
       button_builder options
       content_or_options, options = options, nil if content_is_options
       control = button_tag content_or_options, options, &block
-      form_group nil, control, options
+      form_group nil, control, options, true
     end
     
     def button_link(name = nil, options = {}, html_options = {}, &block)
@@ -165,13 +165,13 @@ module BootstrapBuilder
     def submit(value = nil, options = {})
       button_builder options
       control = submit_tag value, options
-      form_group nil, control, options
+      form_group nil, control, options, true
     end
     
     def button_input(value = nil, options = {})
       button_builder options
       control = button_input_tag value, options
-      form_group nil, control, options
+      form_group nil, control, options, true
     end
     
     private

@@ -14,7 +14,7 @@ class GridSystemTest < ActionView::TestCase
   end
   
   test "bootstrap row with my html options" do
-    expected = %{<div id="foo" class="row bar">Test</div>}
+    expected = %{<div class="row bar" id="foo">Test</div>}
     assert_equal expected, bootstrap_row(id: "foo", class: "bar") { "Test" }
   end
   
@@ -39,7 +39,7 @@ class GridSystemTest < ActionView::TestCase
   end
   
   test "bootstrap column with my html options" do
-    expected = %{<div id="foo" class="col-md-12 bar">Test</div>}
+    expected = %{<div class="col-md-12 bar" id="foo">Test</div>}
     assert_equal expected, bootstrap_col(id: "foo", class: "bar") { "Test" }
   end
   
@@ -69,7 +69,7 @@ class GridSystemTest < ActionView::TestCase
   end
   
   test "bootstrap row with column and with my html options" do
-    expected = %{<div id="foo" class="row bar"><div class="col-md-12">Test</div></div>}
+    expected = %{<div class="row bar" id="foo"><div class="col-md-12 bar" id="foo">Test</div></div>}
     assert_equal expected, bootstrap_row_with_col(id: "foo", class: "bar") { "Test" }
   end
 end

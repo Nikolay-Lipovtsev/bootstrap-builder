@@ -24,8 +24,7 @@ class FormGroupTest < ActionView::TestCase
     
     actual = bootstrap_form_for(@user) do |f|
       f.form_group("Label for form group") do
-        content = f.text_field :name, control_col: 6
-        content = [content, f.email_field(:email, control_col: 4)].join.html_safe
+        "#{f.text_field(:name, control_col: 6)}#{f.email_field(:email, control_col: 4)}".html_safe
       end
     end
     assert_equal expected, actual

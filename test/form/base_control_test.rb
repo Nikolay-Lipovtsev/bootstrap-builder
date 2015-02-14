@@ -39,7 +39,7 @@ class BaseControlTest < ActionView::TestCase
   end
   
   test "default form with text field and with my form group class" do
-    expected = default_form { %{<div class="my-form-group-class form-group"><label class="control-label" for="user_name">Name</label><input class="form-control" type="text" value="Ivan Ivanov" name="user[name]" id="user_name" /></div>} }
+    expected = default_form { %{<div class="form-group my-form-group-class"><label class="control-label" for="user_name">Name</label><input class="form-control" type="text" value="Ivan Ivanov" name="user[name]" id="user_name" /></div>} }
     assert_equal expected, bootstrap_form_for(@user) { |f| f.text_field :name, form_group_class: "my-form-group-class" }
   end
   
@@ -69,12 +69,12 @@ class BaseControlTest < ActionView::TestCase
   end
   
   test "default form with text field and with style option" do
-    expected = default_form { %{<div class="has-success form-group"><label class="control-label" for="user_name">Name</label><input class="form-control" type="text" value="Ivan Ivanov" name="user[name]" id="user_name" /></div>} }
+    expected = default_form { %{<div class="form-group has-success"><label class="control-label" for="user_name">Name</label><input class="form-control" type="text" value="Ivan Ivanov" name="user[name]" id="user_name" /></div>} }
     assert_equal expected, bootstrap_form_for(@user) { |f| f.text_field :name, style: "success" }
   end
   
   test "default form with text field and with icon option" do
-    expected = default_form { %{<div class="has-feedback form-group"><label class="control-label" for="user_name">Name</label><input class="form-control" type="text" value="Ivan Ivanov" name="user[name]" id="user_name" /><span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span></div>} }
+    expected = default_form { %{<div class="form-group has-feedback"><label class="control-label" for="user_name">Name</label><input class="form-control" type="text" value="Ivan Ivanov" name="user[name]" id="user_name" /><span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span></div>} }
     assert_equal expected, bootstrap_form_for(@user) { |f| f.text_field :name, icon: "ok" }
   end
   
