@@ -135,11 +135,8 @@
 		<%= f.text_field :name, label: "With input group", input_group: { type: :right_char, value: ".com" } %>
 		<%= f.text_field :name, label: "With my control col", control_col: 4, offset_control_col: 6 %>
 		<%= f.form_group("Form group label") do %>
-			<%= "Test" %>
-		<% end %>
-		<%= f.wrap do %>
-			<%= f.wrap { "Foo" } %>
-			<%= f.wrap { "Bar" } %>
+			<%= f.text_field :name, control_col: 4 %>
+			<%= f.text_field :name, control_col: 6 %>
 		<% end %>
 	<% end %>
 
@@ -164,6 +161,7 @@
 		<%= f.text_field :name, label: "With input group", input_group: { type: :right_char, value: ".com" } %>
 		<%= f.text_field :name, label: "With my control col", label_col: 6, control_col: 4 %>
 		<%= f.form_group("Form group label") do %>
+		
 			<%= f.text_field :name, control_col: 4 %>
 			<%= f.text_field :name, control_col: 6 %>
 		<% end %>

@@ -19,3 +19,5 @@ gem 'sass-rails', '>= 3.2'
 
 # Use jquery as the JavaScript library
 gem 'jquery-rails'
+gem 'byebug'
+gem 'pry-byebug'
