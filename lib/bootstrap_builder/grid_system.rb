@@ -6,9 +6,61 @@ module BootstrapBuilder
   #
   module GridSystem
     
+    include ActionView::Helpers::TagHelper
+    
     BASE_OPTIONS = [:class, :id]
-    COL_OPTIONS = [:class, :col, :col_disabled, :grid_system, :id, :offset_col]
-    ROW_OPTIONS = [:class, :id, :row_disabled]
+    
+    class Row
+      
+      delegate :content_tag, to: :@template
+      
+      def initialize(template, options = {})
+        @template     = template
+        @options      = options.slice(*BASE_OPTIONS)
+        @row_disabled = options[:row_disabled]
+      end
+      
+      def render(&block)
+        raise ArgumentError, "Missing block" unless block_given?
+        
+        if @row_disabled
+          yield
+        else
+          classes = @options[:class]
+          @options[:class] = "row"
+          @options[:class] = "#{@options[:class]} #{classes}" unless classes.blank?
+          content_tag(:div, @options) { yield }
+        end
+      end
+    end
+    
+    class Column
+      
+      delegate :content_tag, to: :@template
+      
+      def initialize(template, options = {})
+        @template     = template
+        @options      = options.slice(*BASE_OPTIONS)
+        @grid_system  = options[:grid_system] || "md"
+        @col          = options[:col] || 12
+        @offset_col   = options[:offset_col]
+        @col_disabled = options[:col_disabled]
+      end
+      
+      def render(&block)
+        raise ArgumentError, "Missing block" unless block_given?
+        
+        if @col_disabled
+          yield
+        else
+          classes = @options[:class]
+          @options[:class] = "col-#{@grid_system}-#{@col}"
+          @options[:class] = "#{@options[:class]} col-#{@grid_system}-offset-#{@offset_col}" if @offset_col
+          @options[:class] = "#{@options[:class]} #{classes}" unless classes.blank?
+          content_tag(:div, @options) { yield }
+        end
+      end
+    end
     
     # == Bootstrap row
     #
@@ -30,14 +82,11 @@ module BootstrapBuilder
     #   bootstrap_row(row_disabled: true) { "Test" }
     #   # => Test
     #
-    def bootstrap_row(options = {})
+    def bootstrap_row(options = {}, &block)
       options.symbolize_keys!
-      
-      return yield if options.delete(:row_disabled)
-      options[:class] = ["row", options[:class]].compact.join(" ")
-      content_tag(:div, options.slice(*BASE_OPTIONS)) { yield }
+      Row.new(self, options).render(&block)
     end
-  
+    
     # == Bootstrap column
     #
     # Creates a HTML div block with Bootstrap grid column class.
@@ -67,19 +116,9 @@ module BootstrapBuilder
     #   bootstrap_col(col_disabled: true) { "Test" }
     #   # => Test
     #
-    def bootstrap_col(options = {})
+    def bootstrap_col(options = {}, &block)
       options.symbolize_keys!
-      
-      grid_system = options.delete(:grid_system)
-      col         = grid_system_class((options.delete(:col) || 12), grid_system)
-      offset_col  = grid_system_offset_class(options.delete(:offset_col), grid_system)
-      return yield if options.delete(:col_disabled)
-      if col || offset_col
-        options[:class] = [col, offset_col, options[:class]].compact.join(" ")
-        content_tag(:div, options.slice(*BASE_OPTIONS)) { yield }
-      else
-        yield
-      end
+      Column.new(self, options).render(&block)
     end
   
     # == Bootstrap row with column
@@ -131,33 +170,9 @@ module BootstrapBuilder
     #          Test
     #        </div>
     #
-    def bootstrap_row_with_col(options = {})
+    def bootstrap_row_with_col(options = {}, &block)
       options.symbolize_keys!
-      
-      col_tag = bootstrap_col(options.slice(*COL_OPTIONS)) { yield }
-      bootstrap_row(options.slice(*ROW_OPTIONS)) { col_tag }
-    end
-  
-    # == Bootstrap grid system class
-    #
-    # Creates a HTML class with Bootstrap col.
-    #
-    def grid_system_class(col = nil, grid_system = nil)
-      "col-#{(grid_system || default_grid_system).to_s}-#{col}" if col
-    end
-    
-    # == Bootstrap grid system with offsetting class
-    #
-    # Creates a HTML class with Bootstrap offset-col.
-    #
-    def grid_system_offset_class(col = nil, grid_system = nil)
-      "col-#{(grid_system || default_grid_system).to_s}-offset-#{col}" if col
-    end
-  
-    private
-  
-    def default_grid_system
-      "md"
+      Row.new(self, options).render { Column.new(self, options).render(&block) }
     end
   end
 end
