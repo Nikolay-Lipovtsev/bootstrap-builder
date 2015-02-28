@@ -13,9 +13,13 @@ module BootstrapBuilder
           delegate :capture, :content_tag, :label_tag, to: :@template
           
           def initialize(template, label, content_or_options, options, label_is_tag, &block)
-            @template       = template
-            @label          = label
-            @children       = []
+            @template                           = template
+            @label                              = label
+            @grid_system_options                = {}
+            @grid_system_options[:col]          = @options[:control_col]        if @options[:control_col]
+            @grid_system_options[:grid_system]  = @options[:grid_system]        if @options[:grid_system]
+            @grid_system_options[:offset_col]   = @options[:offset_control_col] if @options[:offset_control_col]
+            @grid_system_options[:row_disabled] = @options[:row_disabled]       if @options[:row_disabled]
             
             if block_given?
               @options      = content_or_options || {}
@@ -34,20 +38,15 @@ module BootstrapBuilder
           end
           
           def form_group_builder
-            grid_system_options                 = {}
-            grid_system_options[:col]           = @options[:control_col]        if @options[:control_col]
-            grid_system_options[:grid_system]   = @options[:grid_system]        if @options[:grid_system]
-            grid_system_options[:offset_col]    = @options[:offset_control_col] if @options[:offset_control_col]
-            grid_system_options[:row_disabled]  = @options[:row_disabled]       if @options[:row_disabled]
             
             if @options[:layout] == "horizontal" && !(@options[:form_group_col_disabled])
-              grid_system_options[:offset_col]  ||= 2 unless @label
-              grid_system_options[:col]         ||= 10
-              @content = bootstrap_col(grid_system_options) { @content.html_safe }
+              @grid_system_options[:offset_col]  ||= 2 unless @label
+              @grid_system_options[:col]         ||= 10
+              @content = bootstrap_col(@grid_system_options) { @content.html_safe }
             end
             
             @content = [@label, @content].compact.join.html_safe
-            @content = bootstrap_row_with_col(grid_system_options) { @content } if [:col, :offset_col].any? { |k| grid_system_options.key?(k) }
+            @content = bootstrap_row_with_col(@grid_system_options) { @content } if [:col, :offset_col].any? { |k| @grid_system_options.key?(k) }
             return @content if @options[:form_group_disabled] || @@depth_wraps > 0
             @options[:class] = ["form-group", @options[:form_group_class]].compact.join(" ")
             @options[:id]    = @options[:form_group_id] if @options[:form_group_id]
