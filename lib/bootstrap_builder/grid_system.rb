@@ -38,13 +38,17 @@ module BootstrapBuilder
       
       delegate :content_tag, to: :@template
       
-      def initialize(template, options = {})
-        @template     = template
-        @options      = options.slice(*BASE_OPTIONS)
-        @grid_system  = options[:grid_system] || "md"
-        @col          = options[:col] || 12
-        @offset_col   = options[:offset_col]
-        @col_disabled = options[:col_disabled]
+      def initialize(col, offset_col, template, options = {})
+        @col              = col || 12
+        @offset_col       = offset_col
+        @col_disabled     = options[:col_disabled]
+        @grid_system      = options[:grid_system] || "md"
+        @options          = options.slice(*BASE_OPTIONS)
+        @template         = template
+        classes           = @options[:class]
+        @options[:class]  = "col-#{@grid_system}-#{@col}"
+        @options[:class]  = "#{@options[:class]} col-#{@grid_system}-offset-#{@offset_col}" if @offset_col
+        @options[:class]  = "#{@options[:class]} #{classes}" unless classes.blank?
       end
       
       def render(&block)
@@ -53,12 +57,12 @@ module BootstrapBuilder
         if @col_disabled
           yield
         else
-          classes = @options[:class]
-          @options[:class] = "col-#{@grid_system}-#{@col}"
-          @options[:class] = "#{@options[:class]} col-#{@grid_system}-offset-#{@offset_col}" if @offset_col
-          @options[:class] = "#{@options[:class]} #{classes}" unless classes.blank?
           content_tag(:div, @options) { yield }
         end
+      end
+      
+      def col_class
+        @options[:class]
       end
     end
     
@@ -118,7 +122,7 @@ module BootstrapBuilder
     #
     def bootstrap_col(options = {}, &block)
       options.symbolize_keys!
-      Column.new(self, options).render(&block)
+      Column.new(options[:col], options[:offset_col], self, options).render(&block)
     end
   
     # == Bootstrap row with column
@@ -172,7 +176,7 @@ module BootstrapBuilder
     #
     def bootstrap_row_with_col(options = {}, &block)
       options.symbolize_keys!
-      Row.new(self, options).render { Column.new(self, options).render(&block) }
+      Row.new(self, options).render { Column.new(options[:col], options[:offset_col], self, options).render(&block) }
     end
   end
 end

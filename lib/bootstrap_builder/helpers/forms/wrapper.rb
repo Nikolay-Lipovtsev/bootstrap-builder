@@ -6,34 +6,39 @@ module BootstrapBuilder
       module Wrapper
         class WrapperBuilder # :nodoc:
           
-          @@depth_wraps = 0
-          
           include BootstrapBuilder::GridSystem
           
           delegate :capture, :content_tag, :label_tag, to: :@template
           
-          def initialize(template, label, content_or_options, options, label_is_tag, &block)
-            @template                           = template
-            @label                              = label
-            @grid_system_options                = {}
-            @grid_system_options[:col]          = @options[:control_col]        if @options[:control_col]
-            @grid_system_options[:grid_system]  = @options[:grid_system]        if @options[:grid_system]
-            @grid_system_options[:offset_col]   = @options[:offset_control_col] if @options[:offset_control_col]
-            @grid_system_options[:row_disabled] = @options[:row_disabled]       if @options[:row_disabled]
-            
-            if block_given?
-              @options      = content_or_options || {}
-              @@depth_wraps += 1
-              @content      = capture(&block)
-              @@depth_wraps -= 1
-            else
-              @options      = options || {}
-              @content      = content_or_options
-            end
-            
-            unless label_is_tag
-              @options[:label_class] = ["control-label", @options[:label_class]].compact.join(" ")
-              @label = label_tag(nil, @label, class: @options[:label_class])
+          @@depth_wraps = 0
+          
+          def initialize(method, label, template, options)
+            @method             = method
+            @label              = label || options[:label]
+            @template           = template
+            @options            = options
+            @label_col          = options[:label_col]
+            @label_offset_col   = options[:label_offset_col]
+            @control_col        = options[:control_col]
+            @control_offset_col = options[:control_offset_col]
+            @layout             = options[:layout]
+            @label_class        = options[:label_class]
+            @form_group_class   = options[:form_group_class]
+            @label_col_object   = col_builder(:label)
+            @control_col_object = col_builder(:control)
+          end
+          
+          def label_builder
+            unless @options[:label_disabled]
+              options[:class] = "control-label #{@label_col_object.col_class}" if @layout == "horizontal"
+              options[:class] = "#{options[:class]} sr-only" if @options[:invisible_label]
+              options[:class] = "#{options[:class]} #{@options[:label_class]}" if @options[:label_class]
+              options[:id]    = @options[:label_id] if @options[:label_id]
+              if @method.nil?
+                label_tag(nil, @label, options)
+              else
+                label(@method, @label, options)
+              end
             end
           end
           
@@ -51,6 +56,23 @@ module BootstrapBuilder
             @options[:class] = ["form-group", @options[:form_group_class]].compact.join(" ")
             @options[:id]    = @options[:form_group_id] if @options[:form_group_id]
             content_tag(:div, @content, @options.slice(:id, :class))
+          end
+          
+          private
+          
+          def col_builder(object_type)
+            col         = instance_varible_get("@#{object_type}_col")
+            col         = instance_method("default_horizontal_#{object_type}_col") if @layout == "horizontal" && !(col)
+            offset_col  = instance_varible_get("@#{object_type}_offset_col")
+            Column.new(col, offset_col, @template)
+          end
+          
+          def default_horizontal_label_col
+            2
+          end
+          
+          def default_horizontal_control_col
+            10
           end
         end
       end
