@@ -3,6 +3,7 @@ require 'bootstrap_builder/helpers/forms/error'
 require 'bootstrap_builder/helpers/forms/help'
 require 'bootstrap_builder/helpers/forms/icon'
 require 'bootstrap_builder/helpers/forms/option'
+require 'bootstrap_builder/helpers/forms/tags'
 require 'bootstrap_builder/helpers/forms/wrapper'
 
 module BootstrapBuilder
@@ -14,6 +15,7 @@ module BootstrapBuilder
       include BootstrapBuilder::Helpers::Forms::Help
       include BootstrapBuilder::Helpers::Forms::Icon
       include BootstrapBuilder::Helpers::Forms::Option
+      include BootstrapBuilder::Helpers::Forms::Tags
       include BootstrapBuilder::Helpers::Forms::Wrapper
     end
   end

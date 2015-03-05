@@ -2,7 +2,7 @@ require 'bootstrap_builder/helpers/forms'
 
 module BootstrapBuilder
   module Form
-          
+    
     def bootstrap_form_for(object, options = {}, &block)
       options.symbolize_keys!
       
@@ -40,29 +40,27 @@ module BootstrapBuilder
     delegate  :button_input_tag, :button_link_tag, :button_tag, :content_tag, :capture, :concat, :label_tag, 
               :submit_tag, to: :@template
     
-    def label(method_name, content_or_options = nil, options = {}, &block)
-      content_is_options = content_or_options.is_a? Hash
-      options, content_or_options = content_or_options, nil if content_is_options
-      unless options[:label_disabled]
-        grid_system_class     = grid_system_class((options[:label_col] || default_horizontal_label_col), options[:grid_system]) if options[:layout] == "horizontal"
-        options[:label_class] = [options[:label_class], "control-label"].compact.join(" ")
-        options[:label_class] = [options[:label_class], "#{grid_system_class}"].compact.join(" ") if options[:layout] == "horizontal"
-        options[:label_class] = [options[:label_class], "sr-only"].compact.join(" ") if options[:invisible_label] || options[:layout] == "inline"
-        options[:class]       = options.delete(:label_class)
-        options[:id]          = options.delete(:label_id)
-        options               = options.slice(:id, :class)
-        content_or_options, options = options, nil if content_is_options
-        super method_name, content_or_options, options, &block
-      end
-    end
+    #def label(method_name, content_or_options = nil, options = {}, &block)
+    #  content_is_options = content_or_options.is_a? Hash
+    #  options, content_or_options = content_or_options, nil if content_is_options
+    #  unless options[:label_disabled]
+    #    grid_system_class     = grid_system_class((options[:label_col] || default_horizontal_label_col), options[:grid_system]) if options[:layout] == "horizontal"
+    #    options[:label_class] = [options[:label_class], "control-label"].compact.join(" ")
+    #    options[:label_class] = [options[:label_class], "#{grid_system_class}"].compact.join(" ") if options[:layout] == "horizontal"
+    #    options[:label_class] = [options[:label_class], "sr-only"].compact.join(" ") if options[:invisible_label] || options[:layout] == "inline"
+    #    options[:class]       = options.delete(:label_class)
+    #    options[:id]          = options.delete(:label_id)
+    #    options               = options.slice(:id, :class)
+    #    content_or_options, options = options, nil if content_is_options
+    #    super method_name, content_or_options, options, &block
+    #  end
+    #end
     
     BASE_CONTROL_HELPERS.each do |helper|
       define_method(helper) do |method_name, *args|
         options = args.detect { |a| a.is_a?(Hash) } || {}
         base_options method_name, options
         base_control_options method_name, options
-        help            = help_block options
-        error           = error_message method_name, options
         icon            = icon_block options
         control         = super method_name, options.slice(:class, :disabled, :id, :placeholder, :readonly, :rows)
         control         = [control, icon, help, error].compact.join.html_safe

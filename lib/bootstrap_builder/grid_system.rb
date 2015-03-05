@@ -39,7 +39,7 @@ module BootstrapBuilder
       delegate :content_tag, to: :@template
       
       def initialize(col, offset_col, template, options = {})
-        @col              = col || 12
+        @col              = col
         @offset_col       = offset_col
         @col_disabled     = options[:col_disabled]
         @grid_system      = options[:grid_system] || "md"
@@ -54,7 +54,7 @@ module BootstrapBuilder
       def render(&block)
         raise ArgumentError, "Missing block" unless block_given?
         
-        if @col_disabled
+        if @col_disabled || col_empty?
           yield
         else
           content_tag(:div, @options) { yield }
@@ -63,6 +63,12 @@ module BootstrapBuilder
       
       def col_class
         @options[:class]
+      end
+      
+      private
+      
+      def col_empty?
+        @col.nil? && @offset_col.nil?
       end
     end
     
@@ -122,6 +128,7 @@ module BootstrapBuilder
     #
     def bootstrap_col(options = {}, &block)
       options.symbolize_keys!
+      options[:col] ||= 12
       Column.new(options[:col], options[:offset_col], self, options).render(&block)
     end
   
@@ -176,6 +183,7 @@ module BootstrapBuilder
     #
     def bootstrap_row_with_col(options = {}, &block)
       options.symbolize_keys!
+      options[:col] ||= 12
       Row.new(self, options).render { Column.new(options[:col], options[:offset_col], self, options).render(&block) }
     end
   end
