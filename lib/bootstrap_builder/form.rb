@@ -57,15 +57,14 @@ module BootstrapBuilder
     #end
     
     BASE_CONTROL_HELPERS.each do |helper|
-      define_method(helper) do |method_name, *args|
+      define_method(helper) do |method, *args|
         options = args.detect { |a| a.is_a?(Hash) } || {}
-        base_options method_name, options
-        base_control_options method_name, options
+        base_options method, options
+        base_control_options method, options
         icon            = icon_block options
-        control         = super method_name, options.slice(:class, :disabled, :id, :placeholder, :readonly, :rows)
-        control         = [control, icon, help, error].compact.join.html_safe
-        label           = label method_name, options[:label], options
-        form_group label, control, options, true
+        control         = super method, options.slice(:class, :disabled, :id, :placeholder, :readonly, :rows)
+        binding.pry
+        form_group(label, options, method, helper) { control }
       end
     end
     

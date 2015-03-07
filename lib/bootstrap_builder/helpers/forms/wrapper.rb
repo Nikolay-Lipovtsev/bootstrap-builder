@@ -12,7 +12,8 @@ module BootstrapBuilder
           
           @@depth_wraps = 0
           
-          def initialize(helper, method, label, template, options)
+          def initialize(object, helper, method, label, template, options)
+            @object   = object
             @helper   = helper
             @method   = method
             @label    = label || options[:label]
@@ -32,9 +33,9 @@ module BootstrapBuilder
               @options[:control_col_object] = Column.new(@options[:col], @options[:offset_col], @template)
             end
             
-            label         = label_builder
+            label_tag     = label_builder
             @@depth_wraps =+ 1
-            content       = "#{label}#{@options[:control_col_object].render(yield)}".html_safe
+            content       = "#{label_tag}#{@options[:control_col_object].render(yield)}#{help_block}#{error_message}".html_safe
             @@depth_wraps =- 1
             
             if wrapperable?
@@ -43,6 +44,7 @@ module BootstrapBuilder
               return content
             end
             
+            options = {}
             options[:class] = "form-group"
             options[:class] << @options[:form_group_class] if @options[:form_group_class]
             options[:id]    = @options[:form_group_id] if @options[:form_group_id]
@@ -51,24 +53,25 @@ module BootstrapBuilder
           
           private
           
-          def label_builder(label_classes)
+          def label_builder
             unless no_label?
-              options[:class] = @options[:invisible_label] ? "sr-only #{options[:class]}" : "#{label_classes}"
+              options = {}
+              options[:class] = @options[:invisible_label] ? "sr-only #{@options[:label_class]}" : "#{@options[:label_class]}"
               options[:id]    = @options[:label_id] if @options[:label_id]
               @method ? label(@method, @label, options) : label_tag(nil, @label, options)
             end
           end
           
           def help_block
-            content_tag(:p, @options[:help_block], class: "help-block" if @options[:help_block])
+            content_tag(:p, @options[:help_block], class: "help-block") if @options[:help_block]
           end
           
-          def has_error?(method_name, options = {})
-            method_name && @options[:error_disabled].nil? && @object.respond_to?(:errors) && @object.errors[method_name].any?
+          def has_error?
+            @method && @options[:error_disabled].nil? && @object.respond_to?(:errors) && @object.errors[@method].any?
           end
 
-          def error_message(method_name, options = {})
-            content_tag(:ui, class: "text-danger") { @object.errors[method_name].collect { |msg| concat(content_tag(:li, msg)) }} if has_error?
+          def error_message
+            content_tag(:ui, class: "text-danger") { @object.errors[@method].collect { |msg| concat(content_tag(:li, msg)) }} if has_error?
           end
           
           def horizontal?
@@ -84,14 +87,16 @@ module BootstrapBuilder
           end
           
           def no_label?
-            (@method.nil? && @label.nil?) || [:btn].include?(helper)
+            (@method.nil? && @label.nil?) || [:btn].include?(@helper)
           end
         end
       end
       
-      def form_group(method, label, control, @template, options = {}, &block)
+      FORM_GROUP_OPTIONS = [:label_col, :control_col, :control_offset_col]
+      
+      def form_group(label, options = {}, method = nil, helper = nil, &block)
         options = @options.slice(*FORM_GROUP_OPTIONS).merge(options)
-        WrapperBuilder.new(method, label, control, @template, options).render(&block)
+        WrapperBuilder.new(@object, helper, method, label, @template, options).render(&block)
       end
     end
   end
