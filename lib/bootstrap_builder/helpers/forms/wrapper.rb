@@ -12,43 +12,47 @@ module BootstrapBuilder
           
           @@depth_wraps = 0
           
-          def initialize(object, helper, method, label, template, options)
-            @object   = object
-            @helper   = helper
-            @method   = method
-            @label    = label || options[:label]
-            @template = template
-            @options  = options
+          def initialize(object, helper, method, label_text, template, form_object, options)
+            @object       = object
+            @helper       = helper
+            @method       = method
+            @label_text   = label_text || options[:label]
+            @template     = template
+            @form_object  = form_object
+            @options      = options || {}
           end
           
           def render(&block)
             if horizontal?
               @options[:label_col]          ||= 2
               @options[:control_col]        ||= 10
-              @options[:control_offset_col] ||= 2 if no_label?
-              @options[:label_col_object]   = Column.new(@options[:label_col], @options[:label_offset_col], @template)
-              @options[:control_col_object] = Column.new(@options[:control_col], @options[:control_offset_col], @template)
+              @options[:offset_control_col] ||= 2 if no_label?
+              @options[:label_col_object]   = Column.new(@options[:label_col], @options[:offset_label_col], @template)
               @options[:label_class]        = "control-label #{@options[:label_col_object].col_class} #{@options[:label_class]}".strip
-            else
-              @options[:control_col_object] = Column.new(@options[:col], @options[:offset_col], @template)
             end
             
-            label_tag     = label_builder
-            @@depth_wraps =+ 1
-            content       = "#{label_tag}#{@options[:control_col_object].render(yield)}#{help_block}#{error_message}".html_safe
-            @@depth_wraps =- 1
+            label_tag = label_builder
+            @options[:control_col_object] = Column.new(@options[:control_col], @options[:offset_control_col], @template)
+            @@depth_wraps += 1
+            capture do
+            content = if horizontal?
+              "#{label_tag}#{@options[:control_col_object].render(&block)}#{help_block}#{error_message}".html_safe
+            else
+              @options[:control_col_object].render { "#{label_tag}#{yield}#{help_block}#{error_message}".html_safe }
+            end
+          end
+            @@depth_wraps -= 1
             
             if wrapperable?
-              content = Row.new(@template).render(content) if any_col_option? && !(horizontal?)
+              content = Row.new(@template).render { content } if any_col_option? && !(horizontal?)
+              options = {}
+              options[:class] = "form-group"
+              options[:class] << @options[:form_group_class] if @options[:form_group_class]
+              options[:id]    = @options[:form_group_id] if @options[:form_group_id]
+              content_tag(:div, content, options)
             else
               return content
             end
-            
-            options = {}
-            options[:class] = "form-group"
-            options[:class] << @options[:form_group_class] if @options[:form_group_class]
-            options[:id]    = @options[:form_group_id] if @options[:form_group_id]
-            content_tag(:div, content, options)
           end
           
           private
@@ -56,9 +60,10 @@ module BootstrapBuilder
           def label_builder
             unless no_label?
               options = {}
-              options[:class] = @options[:invisible_label] ? "sr-only #{@options[:label_class]}" : "#{@options[:label_class]}"
+              options[:class] = "sr-only" if @options[:invisible_label]
+              options[:class] = "#{options[:class]} #{@options[:label_class]}".strip if @options[:label_class]
               options[:id]    = @options[:label_id] if @options[:label_id]
-              @method ? label(@method, @label, options) : label_tag(nil, @label, options)
+              @method ? @form_object.label(@method, @label_text, options) : label_tag(nil, @label_text, options)
             end
           end
           
@@ -83,20 +88,20 @@ module BootstrapBuilder
           end
           
           def any_col_option?
-            @options[:col].any? || @options[:offset_col].any? || @options[:label_disabled]
+            @options[:control_col] || @options[:offset_control_col]
           end
           
           def no_label?
-            (@method.nil? && @label.nil?) || [:btn].include?(@helper)
+            (@method.nil? && @label_text.nil?) || @helper == :btn || @options[:label_disabled]
           end
         end
       end
       
-      FORM_GROUP_OPTIONS = [:label_col, :control_col, :control_offset_col]
+      FORM_GROUP_OPTIONS = [:label_col, :control_col, :offset_control_col]
       
-      def form_group(label, options = {}, method = nil, helper = nil, &block)
+      def form_group(label_text, options = {}, method = nil, helper = nil, &block)
         options = @options.slice(*FORM_GROUP_OPTIONS).merge(options)
-        WrapperBuilder.new(@object, helper, method, label, @template, options).render(&block)
+        WrapperBuilder.new(@object, helper, method, label_text, @template, self, options).render(&block)
       end
     end
   end

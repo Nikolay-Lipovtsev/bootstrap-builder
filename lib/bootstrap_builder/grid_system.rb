@@ -12,11 +12,9 @@ module BootstrapBuilder
     
     class Row
       
-      delegate :content_tag, to: :@template
-      
       def initialize(template, options = {})
         @template     = template
-        @options      = options.slice(*BASE_OPTIONS)
+        @options      = options.slice(*BASE_OPTIONS) || {}
         @row_disabled = options[:row_disabled]
       end
       
@@ -28,27 +26,25 @@ module BootstrapBuilder
         else
           classes = @options[:class]
           @options[:class] = "row"
-          @options[:class] = "#{@options[:class]} #{classes}" unless classes.blank?
-          content_tag(:div, @options) { yield }
+          @options[:class] << " #{classes}" if classes
+          @template.content_tag(:div, @options) { yield }
         end
       end
     end
     
     class Column
       
-      delegate :content_tag, to: :@template
-      
       def initialize(col, offset_col, template, options = {})
         @col              = col
         @offset_col       = offset_col
         @col_disabled     = options[:col_disabled]
         @grid_system      = options[:grid_system] || "md"
-        @options          = options.slice(*BASE_OPTIONS)
+        @options          = options.slice(*BASE_OPTIONS) || {}
         @template         = template
         classes           = @options[:class]
-        @options[:class]  = "col-#{@grid_system}-#{@col}"
+        @options[:class]  = "col-#{@grid_system}-#{@col}" if @col
         @options[:class]  = "#{@options[:class]} col-#{@grid_system}-offset-#{@offset_col}" if @offset_col
-        @options[:class]  = "#{@options[:class]} #{classes}" unless classes.blank?
+        @options[:class]  = "#{@options[:class]} #{classes}" if classes
       end
       
       def render(&block)
@@ -57,7 +53,7 @@ module BootstrapBuilder
         if @col_disabled || col_empty?
           yield
         else
-          content_tag(:div, @options) { yield }
+          @template.content_tag(:div, @options) { yield }
         end
       end
       
