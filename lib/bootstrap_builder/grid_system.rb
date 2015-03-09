@@ -18,16 +18,15 @@ module BootstrapBuilder
         @row_disabled = options[:row_disabled]
       end
       
-      def render(&block)
-        raise ArgumentError, "Missing block" unless block_given?
-        
+      def render(content = nil, &block)
+        content = @template.capture(&block) if block_given?
         if @row_disabled
-          yield
+          content
         else
           classes = @options[:class]
           @options[:class] = "row"
           @options[:class] << " #{classes}" if classes
-          @template.content_tag(:div, @options) { yield }
+          @template.content_tag(:div, content, @options)
         end
       end
     end
@@ -47,13 +46,12 @@ module BootstrapBuilder
         @options[:class]  = "#{@options[:class]} #{classes}" if classes
       end
       
-      def render(&block)
-        raise ArgumentError, "Missing block" unless block_given?
-        
+      def render(content = nil, &block)
+        content = @template.capture(&block) if block_given?
         if @col_disabled || col_empty?
-          yield
+          content
         else
-          @template.content_tag(:div, @options) { yield }
+          @template.content_tag(:div, content, @options)
         end
       end
       
