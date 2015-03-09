@@ -104,7 +104,7 @@ module BootstrapBuilder
           options[:value] = ""
           control << hidden_field(method, multiple: true)
         end
-        control_form_group(nil, options, method, helper) { control }
+        control_form_group(nil, options, method, helper) { control.html_safe }
       end
     end
     

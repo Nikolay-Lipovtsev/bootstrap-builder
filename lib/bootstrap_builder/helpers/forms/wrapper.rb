@@ -23,13 +23,13 @@ module BootstrapBuilder
             @options            = options || {}
           end
           
-          def render(&block)
+          def render(content = nil, &block)
             
             if horizontal?
-              if @@depth_wraps == 0
+              if parent?
                 @options[:label_col]          ||= 2
                 @options[:control_col]        ||= 10 if @helper
-                @options[:offset_control_col] ||= 2 if no_label?
+                @options[:offset_control_col] ||= 2 unless label?
               else
                 @options[:label_disabled] = true
               end
@@ -41,17 +41,15 @@ module BootstrapBuilder
             @options[:control_col_object] = Column.new(@options[:control_col], @options[:offset_control_col], @template)
             
             @@depth_wraps += 1
-            content = capture(&block)
+            content = capture(&block) if block_given?
             @@depth_wraps -= 1
             
             content = if horizontal?
               "#{label_tag}#{@options[:control_col_object].render(content.to_s << help_block.to_s << error_message.to_s)}".html_safe
             else
-              label_tag = Column.new(12, nil, @template).render(label_tag) unless @control_form_group 
+              label_tag = Column.new(12, nil, @template).render(label_tag) unless @control_form_group
               @options[:control_col_object].render("#{label_tag}#{content}#{help_block}#{error_message}".html_safe)
             end
-            
-            
             
             if wrapperable?
               content = Row.new(@template).render(content) if rowable?
@@ -61,14 +59,14 @@ module BootstrapBuilder
               options[:id]    = @options[:form_group_id] if @options[:form_group_id]
               content_tag(:div, content, options)
             else
-              return content
+              content
             end
           end
           
           private
           
           def label_builder
-            unless no_label?
+            if label?
               options = {}
               options[:class] = "sr-only" if @options[:invisible_label]
               options[:class] = "#{options[:class]} #{@options[:label_class]}".strip if @options[:label_class]
@@ -94,15 +92,19 @@ module BootstrapBuilder
           end
           
           def wrapperable?
-            @@depth_wraps == 0 && !(@options[:form_group_disabled])
+            parent? && !(@options[:form_group_disabled])
           end
           
           def rowable?
             @options[:layout] != "horizontal" && (!(@control_form_group) || @options[:control_col] || @options[:offset_control_col])
           end
           
-          def no_label?
-            (@method.nil? && @label_text.nil?) || @helper == :btn || @options[:label_disabled]
+          def label?
+            @helper != :btn && !(@options[:label_disabled]) && (@method || @label_text)
+          end
+          
+          def parent?
+            @@depth_wraps == 0
           end
         end
       end
