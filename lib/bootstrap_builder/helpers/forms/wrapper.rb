@@ -8,6 +8,8 @@ module BootstrapBuilder
           
           include BootstrapBuilder::GridSystem
           
+          attr_reader :options
+          
           delegate :capture, :content_tag, :label_tag, to: :@template
           
           @@depth_wraps = 0
@@ -24,7 +26,6 @@ module BootstrapBuilder
           end
           
           def render(content = nil, &block)
-            
             if horizontal?
               if parent?
                 @options[:label_col]          ||= 2
@@ -55,8 +56,11 @@ module BootstrapBuilder
               content = Row.new(@template).render(content) if rowable?
               options = {}
               options[:class] = "form-group"
-              options[:class] << " #{@options[:form_group_class]}" if @options[:form_group_class]
-              options[:id]    = @options[:form_group_id] if @options[:form_group_id]
+              options[:class] << " #{@options[:form_group_class]}"  if @options[:form_group_class]
+              options[:class] << " has-feedback"                    if @options[:icon]
+              options[:class] << " form-group-#{options[:size]}"    if @options[:size] && horizontal?
+              options[:class] << " has-#{options[:style]}"          if @options[:style]
+              options[:id]    = @options[:form_group_id]            if @options[:form_group_id]
               content_tag(:div, content, options)
             else
               content

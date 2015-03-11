@@ -26,8 +26,9 @@ module BootstrapBuilder
     
     include BootstrapBuilder::Helpers::Forms
     
-    BASE_FORM_OPTIONS = [:control_class, :control_col, :invisible_label, :form_group_disabled, :grid_system, 
-                        :label_class, :label_col, :layout, :offset_control_col, :offset_label_col]
+    BASE_FORM_OPTIONS = [:control_class, :control_col, :label_disabled, :invisible_label, :form_group_disabled, 
+                        :grid_system, :label_class, :label_col, :layout, :offset_control_col, :offset_label_col, 
+                        :row_disabled]
     
     def fields_for_with_bootstrap(record_name, record_object = nil, fields_options = {}, &block)
       fields_options, record_object = record_object, nil if record_object.is_a?(Hash) && record_object.extractable_options?
@@ -154,6 +155,28 @@ module BootstrapBuilder
     end
     
     private
+    
+    def base_options(method_name, options)
+      options ||= {}
+      options.symbolize_keys!
+      
+      BASE_FORM_OPTIONS.each{ |name| options[name] ||= @options[name] if @options[name] }
+      
+      options[:class]     = options.delete(:control_class)  if options[:control_class]
+      options[:disabled]  = "disabled"                      if options[:disabled]
+      options[:readonly]  = "readonly"                      if options[:readonly]
+      options[:style] = "has-error" if has_error?(method_name, options) && !([:btn, :control_static, :label].include?(helper))
+    end
+    
+    def base_control_options(method_name, options)
+      options[:class] = [options[:class], "form-control"].compact.join(" ")
+      options[:class] = [options[:class], "input-#{options[:size]}"].compact.join(" ") if options[:size] && options[:layout] != "horizontal"
+      options[:placeholder] ||= options[:label] || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if options[:placeholder] === true
+    end
+    
+    def checkbox_and_radio_options(options)
+      options[:checked] = "checked" if options[:checked]
+    end
     
     def default_horizontal_label_col
       2
