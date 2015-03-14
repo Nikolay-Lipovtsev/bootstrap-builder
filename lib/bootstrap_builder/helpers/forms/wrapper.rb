@@ -84,11 +84,15 @@ module BootstrapBuilder
           end
           
           def has_error?
-            @method && @options[:error_disabled].nil? && @object.respond_to?(:errors) && @object.errors[@method].any?
+            error_controls = BASE_CONTROL_HELPERS + CHECKBOX_AND_RADIO_HELPERS + COLLECTION_HELPERS
+            error_controls.include?(@helper) && @method && @options[:error_disabled].nil? && @object.respond_to?(:errors) && @object.errors[@method].any?
           end
 
           def error_message
-            content_tag(:ui, class: "text-danger") { @object.errors[@method].collect { |msg| concat(content_tag(:li, msg)) }} if has_error?
+            if has_error?
+              @options[:style] = "has-error"
+              content_tag(:ui, class: "text-danger") { @object.errors[@method].collect { |msg| concat(content_tag(:li, msg)) }}
+            end
           end
           
           def horizontal?

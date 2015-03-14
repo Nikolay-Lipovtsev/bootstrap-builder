@@ -11,14 +11,6 @@ module BootstrapBuilder
     include BootstrapBuilder::Button
     include BootstrapBuilder::Form
     include BootstrapBuilder::Glyphicon
-    include BootstrapBuilder::GridSystem  
-    
-    def add_html_class(class_val, new_class, reverse = false)
-      if class_val.blank? || new_class.blank?
-        "#{new_class}#{class_val}"
-      else
-        reverse ? "#{new_class} #{class_val}" : "#{class_val} #{new_class}"
-      end
-    end
+    include BootstrapBuilder::GridSystem
   end
 end

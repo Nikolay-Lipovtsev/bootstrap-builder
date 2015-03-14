@@ -7,10 +7,10 @@ module BootstrapBuilder
       options.symbolize_keys!
       
       options[:layout] = options[:layout].to_s if options[:layout]
-      options[:html] ||= {}
-      options[:html][:role] = "form"
-      options[:html][:class] = ["form-#{options[:layout]}", options[:html][:class]].compact.join(" ") if options[:layout]
-      options[:builder] ||= BootstrapBuilder::FormBuilder
+      options[:html]          ||= {}
+      options[:html][:role]   = "form"
+      options[:html][:class]  = "form-#{options[:layout]} #{options[:html][:class]}" if options[:layout]
+      options[:builder]       ||= BootstrapBuilder::FormBuilder
 
       form_disabled(options) { form_for object, options, &block }
     end
@@ -40,22 +40,6 @@ module BootstrapBuilder
     
     delegate  :button_input_tag, :button_link_tag, :button_tag, :content_tag, :capture, :concat, :label_tag, 
               :submit_tag, to: :@template
-    
-    #def label(method, content_or_options = nil, options = {}, &block)
-    #  content_is_options = content_or_options.is_a? Hash
-    #  options, content_or_options = content_or_options, nil if content_is_options
-    #  unless options[:label_disabled]
-    #    grid_system_class     = grid_system_class((options[:label_col] || default_horizontal_label_col), options[:grid_system]) if options[:layout] == "horizontal"
-    #    options[:label_class] = [options[:label_class], "control-label"].compact.join(" ")
-    #    options[:label_class] = [options[:label_class], "#{grid_system_class}"].compact.join(" ") if options[:layout] == "horizontal"
-    #    options[:label_class] = [options[:label_class], "sr-only"].compact.join(" ") if options[:invisible_label] || options[:layout] == "inline"
-    #    options[:class]       = options.delete(:label_class)
-    #    options[:id]          = options.delete(:label_id)
-    #    options               = options.slice(:id, :class)
-    #    content_or_options, options = options, nil if content_is_options
-    #    super method, content_or_options, options, &block
-    #  end
-    #end
     
     BASE_CONTROL_HELPERS.each do |helper|
       define_method(helper) do |method, *args|
@@ -165,13 +149,15 @@ module BootstrapBuilder
       options[:class]     = options.delete(:control_class)  if options[:control_class]
       options[:disabled]  = "disabled"                      if options[:disabled]
       options[:readonly]  = "readonly"                      if options[:readonly]
-      options[:style] = "has-error" if has_error?(method_name, options) && !([:btn, :control_static, :label].include?(helper))
     end
     
     def base_control_options(method_name, options)
-      options[:class] = [options[:class], "form-control"].compact.join(" ")
-      options[:class] = [options[:class], "input-#{options[:size]}"].compact.join(" ") if options[:size] && options[:layout] != "horizontal"
-      options[:placeholder] ||= options[:label] || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if options[:placeholder] === true
+      classes = options[:class]
+      
+      options[:class].add_html_class("form-control")
+      options[:class].add_html_class("input-#{options[:size]}") if options[:size] && options[:layout] != "horizontal"
+      options[:class].add_html_class(classes)
+      options[:placeholder] ||= options[:label] || I18n.t("helpers.label.#{@object.class.to_s.downcase}.#{method_name.to_s}") if options[:placeholder] == true
     end
     
     def checkbox_and_radio_options(options)
