@@ -9,18 +9,20 @@ class FormGroupTest < ActionView::TestCase
   
   # Default form
   test "default form with form group" do
-    expected = %{<div class="form-group">}
-    expected << %{<label class="control-label">Label for form group</label>}
-    expected << %{<div class="row">}
-    expected << %{<div class="col-md-6">}
-    expected << %{<label class="control-label sr-only" for="user_name">Name</label>}
-    expected << %{<input class="form-control" type="text" value="Ivan Ivanov" name="user[name]" id="user_name" />}
-    expected << %{</div>}
-    expected << %{<div class="col-md-4">}
-    expected << %{<label class="control-label sr-only" for="user_email">Email</label>}
-    expected << %{<input class="form-control" type="email" value="example@example.com" name="user[email]" id="user_email" />}
-    expected << %{</div></div></div>}
-    expected = default_form { expected }
+    expected = %{<div class="form-group">
+                  <div class="row">
+                    <div class="col-md-12"><label>Label for form group</label></div>
+                    <div class="col-md-6">
+                      <label for="user_name">Name</label>
+                      <input class="form-control" type="text" value="Ivan Ivanov" name="user[name]" id="user_name" />
+                    </div>
+                    <div class="col-md-4">
+                      <label for="user_email">Email</label>
+                      <input class="form-control" type="email" value="example@example.com" name="user[email]" id="user_email" />
+                    </div>
+                  </div>
+                </div>}
+    expected = default_form { expected.gsub(/\n/, "").gsub(/> +</, "><") }
     
     actual = bootstrap_form_for(@user) do |f|
       f.form_group("Label for form group") do

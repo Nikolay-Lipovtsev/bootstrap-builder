@@ -4,11 +4,19 @@ module BootstrapBuilder
   module Helpers
     module Forms
       module Wrapper
+        BASE_CONTROL_HELPERS = %w{color_field date_field datetime_field datetime_local_field email_field month_field 
+                                  number_field password_field phone_field range_field search_field telephone_field 
+                                  text_area text_field time_field url_field week_field}
+                                
+        CHECKBOX_AND_RADIO_HELPERS = %w{check_box radio_button}
+      
+        COLLECTION_HELPERS = %w{collection_check_boxes collection_radio_buttons}
+      
+        DATE_SELECT_HELPERS = %w{date_select time_select datetime_select}
+        
         class WrapperBuilder # :nodoc:
           
           include BootstrapBuilder::GridSystem
-          
-          attr_reader :options
           
           delegate :capture, :content_tag, :label_tag, to: :@template
           
@@ -48,7 +56,7 @@ module BootstrapBuilder
             content = if horizontal?
               "#{label_tag}#{@options[:control_col_object].render(content.to_s << help_block.to_s << error_message.to_s)}".html_safe
             else
-              label_tag = Column.new(12, nil, @template).render(label_tag) unless @control_form_group
+              label_tag = Column.new(12, nil, @template).render(label_tag) if !(@control_form_group)
               @options[:control_col_object].render("#{label_tag}#{content}#{help_block}#{error_message}".html_safe)
             end
             

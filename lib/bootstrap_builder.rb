@@ -22,18 +22,6 @@
 require 'bootstrap_builder/base'
 require 'bootstrap_builder/version'
 
-class String 
-  def add_html_class(add_classes)
-    self << " #{add_classes}" if add_classes
-  end
-end
-
-class NilClass
-  def add_html_class(add_classes)
-    "#{add_classes}" if add_classes
-  end
-end
-
 module BootstrapBuilder
   
   ActionView::Base.send :include, BootstrapBuilder::Base

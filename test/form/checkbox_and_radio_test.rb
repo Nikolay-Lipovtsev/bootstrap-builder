@@ -4,6 +4,6 @@ class CheckBoxAndRadioTest < ActionView::TestCase
   include BootstrapBuilder::Base
   
   def setup
-    @user = User.new(email: 'example@example.com', password: 'example')
+    setup_test_fixture
   end
 end

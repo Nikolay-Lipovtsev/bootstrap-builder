@@ -7,12 +7,8 @@ module BootstrapBuilder
         
         include BootstrapBuilder::Glyphicon
         
-        def icon_block(options = {})
-          icon = options[:icon]
-          if icon
-            classes = "form-control-feedback"
-            bootstrap_glyphicon(icon, class: classes)
-          end
+        def icon_block(icon_option)
+          bootstrap_glyphicon(icon_option, class: "form-control-feedback") if icon_option
         end
       end
     end
