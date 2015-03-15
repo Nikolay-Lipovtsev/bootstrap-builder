@@ -33,11 +33,11 @@ module BootstrapBuilder
     
     class Column
       
-      def initialize(col, offset_col, template, options = {})
+      def initialize(col, offset_col, grid_system, template, options = {})
         @col              = col
         @offset_col       = offset_col
+        @grid_system      = grid_system || "md"
         @col_disabled     = options[:col_disabled]
-        @grid_system      = options[:grid_system] || "md"
         @options          = options.slice(*BASE_OPTIONS) || {}
         @template         = template
         classes           = @options[:class]
@@ -123,7 +123,7 @@ module BootstrapBuilder
     def bootstrap_col(options = {}, &block)
       options.symbolize_keys!
       options[:col] ||= 12
-      Column.new(options[:col], options[:offset_col], self, options).render(&block)
+      Column.new(options[:col], options[:offset_col], options[:grid_system], self, options).render(&block)
     end
   
     # == Bootstrap row with column
@@ -178,7 +178,7 @@ module BootstrapBuilder
     def bootstrap_row_with_col(options = {}, &block)
       options.symbolize_keys!
       options[:col] ||= 12
-      Row.new(self, options).render { Column.new(options[:col], options[:offset_col], self, options).render(&block) }
+      Row.new(self, options).render { Column.new(options[:col], options[:offset_col], options[:grid_system], self, options).render(&block) }
     end
   end
 end

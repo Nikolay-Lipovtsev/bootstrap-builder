@@ -71,6 +71,7 @@ module BootstrapBuilder
     #      </div>
     #      
     def button_tag(content_or_options = nil, options = nil, &block)
+      return "Test"
       if content_or_options.is_a? Hash
         options = content_or_options
       else
@@ -79,7 +80,7 @@ module BootstrapBuilder
       
       button_block(options) do
         options = base_button_class options
-        options = { name: "button", type: "submit" }.merge!(options.symbolize_keys)
+        options = { name: "button", type: "submit" }.merge!(options)
         if block_given?
           content_tag :button, options, &block
         else
@@ -163,7 +164,7 @@ module BootstrapBuilder
       button_block(html_options) do
         html_options = base_button_class html_options
         html_options[:class] = [html_options[:class], "disabled"].compact.join(" ") if html_options[:disabled]
-        html_options = { role: "button" }.merge!(html_options.symbolize_keys)
+        html_options = { role: "button" }.merge!(html_options)
         name ||= "Button"
         options, html_options = html_options, nil if block_given?
         link_to name, options, html_options, &block

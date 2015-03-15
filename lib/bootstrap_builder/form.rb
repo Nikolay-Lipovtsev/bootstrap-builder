@@ -1,4 +1,5 @@
 require 'bootstrap_builder/helpers/forms'
+require 'bootstrap_builder/button'
 
 module BootstrapBuilder
   module Form
@@ -27,6 +28,7 @@ module BootstrapBuilder
   class FormBuilder < ActionView::Helpers::FormBuilder
     
     include BootstrapBuilder::Helpers::Forms
+    include BootstrapBuilder::Button
     
     BASE_FORM_OPTIONS = [:control_class, :control_col, :label_disabled, :invisible_label, :form_group_disabled, 
                         :grid_system, :label_class, :label_col, :layout, :offset_control_col, :offset_label_col, 
@@ -40,19 +42,15 @@ module BootstrapBuilder
     
     alias_method_chain :fields_for, :bootstrap
     
-    delegate  :button_input_tag, :button_link_tag, :button_tag, :content_tag, :capture, :concat, :label_tag, 
-              :submit_tag, to: :@template
+    delegate  :content_tag, :capture, :concat, :label_tag, 
+              to: :@template
     
     BASE_CONTROL_HELPERS.each do |helper|
       define_method(helper) do |method, *args|
         options = args.detect { |a| a.is_a?(Hash) } || {}
-        base_options(options)
-        classes         = "form-control"
-        classes         << " input-#{options[:size]}" if options[:size] && horizontal?
-        classes         << " #{options[:class]}"      if options[:class]
-        options[:class] = classes
-        control         = super(method, options.slice(:class, :disabled, :id, :placeholder, :readonly, :rows))
-        control         = "#{control}#{icon_block(options[:icon])}".html_safe
+        options_for_base_control_and_select(options)
+        control = super(method, options.slice(:class, :disabled, :id, :placeholder, :readonly, :rows))
+        control = "#{control}#{icon_block(options[:icon])}".html_safe
         control_form_group(nil, options, method, helper) { control }
       end
     end
@@ -63,7 +61,6 @@ module BootstrapBuilder
         options = args.detect { |a| a.is_a?(Hash) } || {}
         base_options(options)
         options[:checked]     = "checked" if options[:checked]
-        # ??????????????????????????????????????????????????????????????????????
         control               = super(method, *args.map { |a| a.is_a?(Hash) ? options.slice(:class, :disabled, :id, :multiple) : a })
         control               = "#{control}#{options.delete(:label_text)}".html_safe
         label_options         = {}
@@ -110,16 +107,14 @@ module BootstrapBuilder
     end
     
     def select(method, choices = nil, select_options = {}, options = {}, &block)
-      base_options(options)
-      #base_control_options method, options
+      options_for_base_control_and_select(options)
       control           = super method, choices, select_options, options.slice(:class, :disabled, :placeholder, :readonly, :rows), &block
       control_form_group(nil, options, method, :select) { control }
     end
     
     DATE_SELECT_HELPERS.each do |helper|
       define_method(helper) do |method, options = {}, html_options = {}|
-        base_options(options)
-        #base_control_options method, options
+        options_for_base_control_and_select(options)
         html_options[:class]  = [options.delete(:control_class), options.delete(:class), html_options.delete(:class), "form-control bootstrap-builder-#{helper.gsub("_", "-")}"].compact.join " "
         control               = super method, options, html_options.slice(:class, :disabled, :placeholder, :readonly, :rows)
         options[:label_class] = [options[:label_class], "bootstrap-builder-#{helper.gsub("_", "-")}"].compact.join " "
@@ -130,26 +125,26 @@ module BootstrapBuilder
     def button(content_or_options = nil, options = {}, &block)
       content_is_options = content_or_options.is_a? Hash
       options, content_or_options = content_or_options, nil if content_is_options
-      button_builder options
+      button_options options
       content_or_options, options = options, nil if content_is_options
-      control = button_tag content_or_options, options, &block
+      control = button_tag(content_or_options, options, &block)
       control_form_group(nil, options, nil, :btn) { control }
     end
     
     def button_link(name = nil, options = {}, html_options = {}, &block)
-      button_builder html_options
+      button_options html_options
       control = button_link_tag name, options, html_options, &block
       control_form_group(nil, options, nil, :btn) { control }
     end
     
     def submit(value = nil, options = {})
-      button_builder options
+      button_options options
       control = submit_tag value, options
       control_form_group(nil, options, nil, :btn) { control }
     end
     
     def button_input(value = nil, options = {})
-      button_builder options
+      button_options options
       control = button_input_tag value, options
       control_form_group(nil, options, nil, :btn) { control }
     end
@@ -167,6 +162,14 @@ module BootstrapBuilder
       options[:readonly]  = "readonly"                      if options[:readonly]
     end
     
+    def options_for_base_control_and_select(options)
+      base_options(options)
+      classes         = "form-control"
+      classes         << " input-#{options[:size]}" if options[:size] && !(horizontal?)
+      classes         << " #{options[:class]}"      if options[:class]
+      options[:class] = classes
+    end
+    
     def default_horizontal_label_col
       2
     end
@@ -175,10 +178,9 @@ module BootstrapBuilder
       @options[:layout] == "horizontal"
     end
     
-    def button_builder(options)
+    def button_options(options)
       base_options(options)
-      options[:class] = options[:control_class] if options[:control_class]
-      options         = options.slice(:active, :class, :col, :style, :size, :disabled)
+      options = options.slice(:active, :class, :col, :style, :size, :disabled)
     end
   end
 end

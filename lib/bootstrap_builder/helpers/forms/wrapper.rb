@@ -14,6 +14,8 @@ module BootstrapBuilder
       
         DATE_SELECT_HELPERS = %w{date_select time_select datetime_select}
         
+        FORM_GROUP_OPTIONS = [:label_col, :control_col, :offset_control_col, :layout]
+        
         class WrapperBuilder # :nodoc:
           
           include BootstrapBuilder::GridSystem
@@ -42,12 +44,12 @@ module BootstrapBuilder
               else
                 @options[:label_disabled] = true
               end
-              @options[:label_col_object] = Column.new(@options[:label_col], @options[:offset_label_col], @template)
+              @options[:label_col_object] = Column.new(@options[:label_col], @options[:offset_label_col], @options[:grid_system], @template)
               @options[:label_class]      = "control-label #{@options[:label_col_object].col_class} #{@options[:label_class]}".strip
             end
             
             label_tag = label_builder
-            @options[:control_col_object] = Column.new(@options[:control_col], @options[:offset_control_col], @template)
+            @options[:control_col_object] = Column.new(@options[:control_col], @options[:offset_control_col], @options[:grid_system], @template)
             
             @@depth_wraps += 1
             content = capture(&block) if block_given?
@@ -56,7 +58,7 @@ module BootstrapBuilder
             content = if horizontal?
               "#{label_tag}#{@options[:control_col_object].render(content.to_s << help_block.to_s << error_message.to_s)}".html_safe
             else
-              label_tag = Column.new(12, nil, @template).render(label_tag) if !(@control_form_group)
+              label_tag = Column.new(12, nil, @options[:grid_system], @template).render(label_tag) if !(@control_form_group)
               @options[:control_col_object].render("#{label_tag}#{content}#{help_block}#{error_message}".html_safe)
             end
             
@@ -66,8 +68,8 @@ module BootstrapBuilder
               options[:class] = "form-group"
               options[:class] << " #{@options[:form_group_class]}"  if @options[:form_group_class]
               options[:class] << " has-feedback"                    if @options[:icon]
-              options[:class] << " form-group-#{options[:size]}"    if @options[:size] && horizontal?
-              options[:class] << " has-#{options[:style]}"          if @options[:style]
+              options[:class] << " form-group-#{@options[:size]}"    if @options[:size] && horizontal?
+              options[:class] << " has-#{@options[:style]}"         if @options[:style]
               options[:id]    = @options[:form_group_id]            if @options[:form_group_id]
               content_tag(:div, content, options)
             else
@@ -112,7 +114,7 @@ module BootstrapBuilder
           end
           
           def rowable?
-            @options[:layout] != "horizontal" && (!(@control_form_group) || @options[:control_col] || @options[:offset_control_col])
+            !(horizontal?) && (!(@control_form_group) || @options[:control_col] || @options[:offset_control_col])
           end
           
           def label?
@@ -125,15 +127,12 @@ module BootstrapBuilder
         end
       end
       
-      FORM_GROUP_OPTIONS = [:label_col, :control_col, :offset_control_col, :layout]
-      
       def form_group(label_text = nil, options = {}, &block)
         options = @options.slice(*FORM_GROUP_OPTIONS).merge(options)
         WrapperBuilder.new(@object, nil, nil, label_text, @template, self, false, options).render(&block)
       end
       
       def control_form_group(label_text = nil, options = {}, method = nil, helper = nil, &block)
-        options = @options.slice(*FORM_GROUP_OPTIONS).merge(options)
         WrapperBuilder.new(@object, helper, method, label_text, @template, self, true, options).render(&block)
       end
     end
