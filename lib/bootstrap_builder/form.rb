@@ -42,7 +42,7 @@ module BootstrapBuilder
     
     alias_method_chain :fields_for, :bootstrap
     
-    delegate  :content_tag, :capture, :concat, :label_tag, 
+    delegate  :button_tag, :content_tag, :capture, :concat, :label_tag, 
               to: :@template
     
     BASE_CONTROL_HELPERS.each do |helper|
@@ -108,7 +108,7 @@ module BootstrapBuilder
     
     def select(method, choices = nil, select_options = {}, options = {}, &block)
       options_for_base_control_and_select(options)
-      control           = super method, choices, select_options, options.slice(:class, :disabled, :placeholder, :readonly, :rows), &block
+      control = super method, choices, select_options, options.slice(:class, :disabled, :placeholder, :readonly, :rows), &block
       control_form_group(nil, options, method, :select) { control }
     end
     
@@ -122,30 +122,30 @@ module BootstrapBuilder
       end
     end
     
-    def button(content_or_options = nil, options = {}, &block)
+    def bootstrap_button(content_or_options = nil, options = {}, &block)
       content_is_options = content_or_options.is_a? Hash
       options, content_or_options = content_or_options, nil if content_is_options
       button_options options
       content_or_options, options = options, nil if content_is_options
-      control = button_tag(content_or_options, options, &block)
+      control = bootstrap_button_tag(content_or_options, options, &block)
       control_form_group(nil, options, nil, :btn) { control }
     end
     
-    def button_link(name = nil, options = {}, html_options = {}, &block)
+    def bootstrap_button_link(name = nil, options = {}, html_options = {}, &block)
       button_options html_options
-      control = button_link_tag name, options, html_options, &block
+      control = bootstrap_button_link_tag name, options, html_options, &block
       control_form_group(nil, options, nil, :btn) { control }
     end
     
-    def submit(value = nil, options = {})
+    def bootstrap_submit(value = nil, options = {})
       button_options options
-      control = submit_tag value, options
+      control = bootstrap_submit_tag value, options
       control_form_group(nil, options, nil, :btn) { control }
     end
     
-    def button_input(value = nil, options = {})
+    def bootstrap_button_input(value = nil, options = {})
       button_options options
-      control = button_input_tag value, options
+      control = bootstrap_button_input_tag value, options
       control_form_group(nil, options, nil, :btn) { control }
     end
     
@@ -155,7 +155,7 @@ module BootstrapBuilder
       options ||= {}
       options.symbolize_keys!
       
-      BASE_FORM_OPTIONS.each{ |name| options[name] ||= @options[name] if @options[name] }
+      BASE_FORM_OPTIONS.each { |name| options[name] ||= @options[name] if @options[name] }
       
       options[:class]     = options.delete(:control_class)  if options[:control_class]
       options[:disabled]  = "disabled"                      if options[:disabled]

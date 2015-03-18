@@ -37,70 +37,70 @@
 <%= content_tag :h2, titel_name_item %>
 <hr>
 	<h3><br>Styles</h3>
-	<%= button_tag "Default" %>
-	<%= button_tag "Primary", style: "primary" %>
-	<%= button_tag "Success", style: "success" %>
-	<%= button_tag "Info", style: "info" %>
-	<%= button_tag "Warning", style: "warning" %>
-	<%= button_tag "Danger", style: "danger" %>
-	<%= button_tag "Link", style: "link" %>
+	<%= bootstrap_button_tag("Default") %>
+	<%= bootstrap_button_tag "Primary", style: "primary" %>
+	<%= bootstrap_button_tag "Success", style: "success" %>
+	<%= bootstrap_button_tag "Info", style: "info" %>
+	<%= bootstrap_button_tag "Warning", style: "warning" %>
+	<%= bootstrap_button_tag "Danger", style: "danger" %>
+	<%= bootstrap_button_tag "Link", style: "link" %>
 	
 	<h3><br>Sizes</h3>
 	<p>
-		<%= button_tag "Large button", style: "primary", size: "lg" %>
-		<%= button_tag "Large button", size: "lg" %>
+		<%= bootstrap_button_tag "Large button", style: "primary", size: "lg" %>
+		<%= bootstrap_button_tag "Large button", size: "lg" %>
 	</p>
 	<p>
-		<%= button_tag "Default button", style: "primary" %>
-		<%= button_tag "Default button" %>
+		<%= bootstrap_button_tag "Default button", style: "primary" %>
+		<%= bootstrap_button_tag "Default button" %>
 	</p>
 	<p>
-		<%= button_tag "Small button", style: "primary", size: "sm" %>
-		<%= button_tag "Small button", size: "sm" %>
+		<%= bootstrap_button_tag "Small button", style: "primary", size: "sm" %>
+		<%= bootstrap_button_tag "Small button", size: "sm" %>
 	</p>
 	<p>
-		<%= button_tag "Extra small button", style: "primary", size: "xs" %>
-		<%= button_tag "Extra small button", size: "xs" %>
+		<%= bootstrap_button_tag "Extra small button", style: "primary", size: "xs" %>
+		<%= bootstrap_button_tag "Extra small button", size: "xs" %>
 	</p>
 	<p>
-		<%= button_tag "Block level button", style: "primary", col: 12, size: "lg" %>
+		<%= bootstrap_button_tag "Block level button", style: "primary", col: 12, size: "lg" %>
 	<p>
 	</p>
-		<%= button_tag "Block level button", col: 12, size: "lg" %>
+		<%= bootstrap_button_tag "Block level button", col: 12, size: "lg" %>
 	</p>
 	
 	<h3><br>Active state</h3>
 	<h4>Button element</h4>
-	<%= button_tag "Primary button", style: "primary", active: true %>
-	<%= button_tag "Button", active: true %>
+	<%= bootstrap_button_tag "Primary button", style: "primary", active: true %>
+	<%= bootstrap_button_tag "Button", active: true %>
 
 	<h4>Anchor element</h4>
-	<%= button_link_tag "Primary link", new_user_path, style: "primary", active: true %>
-	<%= button_link_tag "Link", new_user_path, active: true %>
+	<%= bootstrap_button_link_tag "Primary link", new_user_path, style: "primary", active: true %>
+	<%= bootstrap_button_link_tag "Link", new_user_path, active: true %>
 
 	<h4>Submit element</h4>
-	<%= submit_tag "Primary submit", style: "primary", active: true %>
-	<%= submit_tag "Submit", active: true %>
+	<%= bootstrap_submit_tag "Primary submit", style: "primary", active: true %>
+	<%= bootstrap_submit_tag "Submit", active: true %>
 	
 	
 	<h3><br>Disabled state</h3>
 	<h4>Button element</h4>
-	<%= button_tag "Primary button", style: "primary", disabled: true %>
-	<%= button_tag "Button", disabled: true %>
+	<%= bootstrap_button_tag "Primary button", style: "primary", disabled: true %>
+	<%= bootstrap_button_tag "Button", disabled: true %>
 
 	<h4>Anchor element</h4>
-	<%= button_link_tag "Primary link", new_user_path, style: "primary", disabled: true %>
-	<%= button_link_tag "Link", new_user_path, disabled: true %>
+	<%= bootstrap_button_link_tag "Primary link", new_user_path, style: "primary", disabled: true %>
+	<%= bootstrap_button_link_tag "Link", new_user_path, disabled: true %>
 
 	<h4>Submit element</h4>
-	<%= submit_tag "Primary submit", style: "primary", disabled: true %>
-	<%= submit_tag "Submit", disabled: true %>
+	<%= bootstrap_submit_tag "Primary submit", style: "primary", disabled: true %>
+	<%= bootstrap_submit_tag "Submit", disabled: true %>
 	
 	<h4><br>Button tags</h4>
-	<%= button_link_tag "Link", new_user_path %>
-	<%= button_tag "Button" %>
-	<%= button_input_tag "Input" %>
-	<%= submit_tag "Submit" %>
+	<%= bootstrap_button_link_tag "Link", new_user_path %>
+	<%= bootstrap_button_tag "Button" %>
+	<%= bootstrap_button_input_tag "Input" %>
+	<%= bootstrap_submit_tag "Submit" %>
 
 <% titel_name_item = titel_name[2] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
@@ -239,7 +239,7 @@
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
 	<%= bootstrap_form_for(@user) do |f| %>
-		<%= f.select :id, User.all.collect { |p| [ p.name, p.id ] }, {} %>
+		<%= f.select :id, User.all.collect { |p| [ p.name, p.id ] } %>
 		<%= f.select :id, User.all.collect { |p| [ p.name, p.id ] }, {}, { label: "With my label text" } %>
 		<%= f.select :id, User.all.collect { |p| [ p.name, p.id ] }, {}, { label: "With invisible label", invisible_label: true } %>
 		<%= f.select :id, User.all.collect { |p| [ p.name, p.id ] }, {}, { label: "Without label", label_disabled: true } %>
@@ -258,7 +258,7 @@
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
 	<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
-		<%= f.select :name, User.all.collect { |p| [ p.name, p.id ] }, {} %>
+		<%= f.select :name, User.all.collect { |p| [ p.name, p.id ] } %>
 		<%= f.select :name, User.all.collect { |p| [ p.name, p.id ] }, {}, { label: "With my label text" } %>
 		<%= f.select :name, User.all.collect { |p| [ p.name, p.id ] }, {}, { label: "With invisible label", invisible_label: true } %>
 		<%= f.select :name, User.all.collect { |p| [ p.name, p.id ] }, {}, { label: "Without label", label_disabled: true } %>
@@ -318,29 +318,34 @@
 <% titel_name_item = titel_name[3][11] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
-	<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
-		<%= f.button %>
-		<%= f.button "With my text" %>
-		<%= f.button "With my control class", control_class: "my-control-class" %>
-		<%= f.button "With my form group class", control_class: "my-form-group-class" %>
-		<%= f.button "Disabled button", disabled: true %>
-		<%= f.button "Button size", size: "lg" %>
-		<%= f.button "Button style", style: "primary" %>
-		<%= f.button "With my control col", control_col: 4, offset_control_col: 6 %>
+	<%= bootstrap_form_for(@user) do |f| %>
+		<%= f.bootstrap_button %>
+		<%= f.bootstrap_button "With my text" %>
+		<%= f.bootstrap_button "With my control class", control_class: "my-control-class" %>
+		<%= f.bootstrap_button "With my form group class", control_class: "my-form-group-class" %>
+		<%= f.bootstrap_button "Disabled button", disabled: true %>
+		<%= f.bootstrap_button "Button size", size: "lg" %>
+		<%= f.bootstrap_button "Button style", style: "primary" %>
+		<%= f.bootstrap_button "With my control col", control_col: 4, offset_control_col: 6 %>
+		<%= f.form_group("Form group label") do %>
+		
+			<%= f.bootstrap_button "Button style", control_class: "btn-block", style: "primary", control_col: 2 %>
+			<%= f.bootstrap_button "Button style", control_class: "btn-block", style: "primary", control_col: 2 %>
+		<% end %>
 	<% end %>
 
 <% titel_name_item = titel_name[3][12] %>
 <%= link_to "", "#", name: titel_name_item.parameterize("-") %>
 <%= content_tag :h3, titel_name_item %>
 	<%= bootstrap_form_for(@user, layout: :horizontal) do |f| %>
-		<%= f.button %>
-		<%= f.button "With my text" %>
-		<%= f.button "With my control class", control_class: "my-control-class" %>
-		<%= f.button "With my form group class", control_class: "my-form-group-class" %>
-		<%= f.button "Disabled button", disabled: true %>
-		<%= f.button "Button size", size: "lg" %>
-		<%= f.button "Button style", style: "primary" %>
-		<%= f.button "With my control col", control_col: 4, offset_control_col: 6 %>
+		<%= f.bootstrap_button %>
+		<%= f.bootstrap_button "With my text" %>
+		<%= f.bootstrap_button "With my control class", control_class: "my-control-class" %>
+		<%= f.bootstrap_button "With my form group class", control_class: "my-form-group-class" %>
+		<%= f.bootstrap_button "Disabled button", disabled: true %>
+		<%= f.bootstrap_button "Button size", size: "lg" %>
+		<%= f.bootstrap_button "Button style", style: "primary" %>
+		<%= f.bootstrap_button "With my control col", control_col: 4, offset_control_col: 6 %>
 	<% end %>
 
 <% titel_name_item = titel_name[4] %>

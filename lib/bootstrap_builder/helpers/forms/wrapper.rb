@@ -40,7 +40,7 @@ module BootstrapBuilder
               if parent?
                 @options[:label_col]          ||= 2
                 @options[:control_col]        ||= 10 if @helper
-                @options[:offset_control_col] ||= 2 unless label?
+                @options[:offset_control_col] ||= 2 if offsetting?
               else
                 @options[:label_disabled] = true
               end
@@ -68,7 +68,7 @@ module BootstrapBuilder
               options[:class] = "form-group"
               options[:class] << " #{@options[:form_group_class]}"  if @options[:form_group_class]
               options[:class] << " has-feedback"                    if @options[:icon]
-              options[:class] << " form-group-#{@options[:size]}"    if @options[:size] && horizontal?
+              options[:class] << " form-group-#{@options[:size]}"   if @options[:size] && horizontal?
               options[:class] << " has-#{@options[:style]}"         if @options[:style]
               options[:id]    = @options[:form_group_id]            if @options[:form_group_id]
               content_tag(:div, content, options)
@@ -111,6 +111,10 @@ module BootstrapBuilder
           
           def wrapperable?
             parent? && !(@options[:form_group_disabled])
+          end
+          
+          def offsetting?
+            !(label?)
           end
           
           def rowable?

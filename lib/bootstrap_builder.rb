@@ -23,6 +23,5 @@ require 'bootstrap_builder/base'
 require 'bootstrap_builder/version'
 
 module BootstrapBuilder
-  
   ActionView::Base.send :include, BootstrapBuilder::Base
 end
