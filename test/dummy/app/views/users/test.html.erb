@@ -329,8 +329,8 @@
 		<%= f.bootstrap_button "With my control col", control_col: 4, offset_control_col: 6 %>
 		<%= f.form_group("Form group label") do %>
 		
-			<%= f.bootstrap_button "Button style", control_class: "btn-block", style: "primary", control_col: 2 %>
-			<%= f.bootstrap_button "Button style", control_class: "btn-block", style: "primary", control_col: 2 %>
+			<%= f.bootstrap_button "Button in form group", control_col: 2 %>
+			<%= f.bootstrap_button "Button in form group", control_col: 2 %>
 		<% end %>
 	<% end %>
 
@@ -346,6 +346,11 @@
 		<%= f.bootstrap_button "Button size", size: "lg" %>
 		<%= f.bootstrap_button "Button style", style: "primary" %>
 		<%= f.bootstrap_button "With my control col", control_col: 4, offset_control_col: 6 %>
+		<%= f.form_group("Form group label") do %>
+		
+			<%= f.bootstrap_button "Button in form group", control_col: 2 %>
+			<%= f.bootstrap_button "Button in form group", control_col: 2 %>
+		<% end %>
 	<% end %>
 
 <% titel_name_item = titel_name[4] %>

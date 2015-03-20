@@ -2,12 +2,51 @@ require 'bootstrap_builder/helpers/forms'
 require 'bootstrap_builder/button'
 
 module BootstrapBuilder
+  
+  # = Bootstrap Builder Form
+  #
+  # Provides a number of methods for creating a simple Bootstrap form
+  #
   module Form
     
+    # == Bootstrap form for
+    #
+    # Сreates html form style Bootstrap.
+    #
+    # === Options
+    # You can use symbols or string for the attribute names.
+    #
+    # <tt>:layout</tt> this parameter sets the style of the form Bootstrap. If not specified, the default form 
+    # is generated. The value can be :horizontal and :inline.
+    #
+    # <tt>:disabled</tt> if set to true, the content will be wrapped in fieldset html tag with disabled option.
+    #
+    # === Examples
+    #   bootstrap_form_for(@user) { |f| nil }
+    #   # =>  <form role="form" class="new_user" id="new_user" action="/users" accept-charset="UTF-8"
+    #         method="post">
+    #           <input name="utf8" type="hidden" value="✓">
+    #           <input type="hidden" name="authenticity_token" value="...">
+    #         </form>
+    #
+    #   bootstrap_form_for(@user, layout: :horizontal) { |f| nil }
+    #   # =>  <form role="form" class="form-horizontal" id="new_user" action="/users" accept-charset="UTF-8"
+    #         method="post">
+    #           <input name="utf8" type="hidden" value="✓">
+    #           <input type="hidden" name="authenticity_token" value="...">
+    #         </form>
+    #
+    #   bootstrap_form_for(@user, layout: :horizontal, html: { id: "foo", class: "bar" }) { |f| nil }
+    #   # =>  <form id="foo" class="form-horizontal bar" role="form" id="new_user" action="/users"
+    #         accept-charset="UTF-8" method="post">
+    #           <input name="utf8" type="hidden" value="✓">
+    #           <input type="hidden" name="authenticity_token" value="...">
+    #         </form>
+    #
     def bootstrap_form_for(object, options = {}, &block)
       options.symbolize_keys!
       
-      options[:layout] = options[:layout].to_s if options[:layout]
+      options[:layout]        = options[:layout].to_s if options[:layout]
       options[:html]          ||= {}
       options[:html][:role]   = "form"
       classes                 = options[:html][:class]
@@ -24,7 +63,11 @@ module BootstrapBuilder
       options[:disabled] ? content_tag(:fieldset, disabled: true) { yield } : yield
     end
   end
-  
+
+  # = Bootstrap Builder Form Builder
+  #
+  # Provides a number of methods for creating a simple Bootstrap form controls
+  #
   class FormBuilder < ActionView::Helpers::FormBuilder
     
     include BootstrapBuilder::Helpers::Forms
@@ -42,8 +85,7 @@ module BootstrapBuilder
     
     alias_method_chain :fields_for, :bootstrap
     
-    delegate  :button_tag, :content_tag, :capture, :concat, :label_tag, 
-              to: :@template
+    delegate  :content_tag, :capture, :concat, :label_tag, to: :@template
     
     BASE_CONTROL_HELPERS.each do |helper|
       define_method(helper) do |method, *args|
