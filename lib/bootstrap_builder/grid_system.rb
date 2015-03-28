@@ -55,7 +55,7 @@ module BootstrapBuilder
         end
       end
       
-      def col_class
+      def html_class
         @options[:class]
       end
       

@@ -46,7 +46,7 @@ module BootstrapBuilder
     def bootstrap_form_for(object, options = {}, &block)
       options.symbolize_keys!
       
-      options[:layout]        = options[:layout].to_s if options[:layout]
+      options[:layout]        = options[:layout] ? options[:layout].to_sym : :main
       options[:html]          ||= {}
       options[:html][:role]   = "form"
       classes                 = options[:html][:class]
@@ -73,31 +73,31 @@ module BootstrapBuilder
     include BootstrapBuilder::Helpers::Forms
     include BootstrapBuilder::Button
     
-    BASE_FORM_OPTIONS = [:control_class, :control_col, :label_disabled, :invisible_label, :form_group_disabled, 
+    BASE_OPTIONS = [:control_class, :control_col, :label_disabled, :invisible_label, :form_group_disabled, 
                         :grid_system, :label_class, :label_col, :layout, :offset_control_col, :offset_label_col, 
                         :row_disabled]
-    
-    def fields_for_with_bootstrap(record_name, record_object = nil, fields_options = {}, &block)
-      fields_options, record_object = record_object, nil if record_object.is_a?(Hash) && record_object.extractable_options?
-      BASE_FORM_OPTIONS.each { |name| fields_options[name] ||= options[name] if options[name] }
-      fields_for_without_bootstrap record_name, record_object, fields_options, &block
-    end
-    
-    alias_method_chain :fields_for, :bootstrap
-    
+                        
     delegate  :content_tag, :capture, :concat, :label_tag, to: :@template
     
+    def bootstrap_fields_for(record_name, record_object = nil, fields_options = {}, &block)
+      fields_options, record_object = record_object, nil if record_object.is_a?(Hash) && record_object.extractable_options?
+      BASE_OPTIONS.each { |name| fields_options[name] ||= options[name] if options[name] }
+      fields_for(record_name, record_object, fields_options, &block)
+    end
+    
     BASE_CONTROL_HELPERS.each do |helper|
+      helper.gsub!("bootstrap_")
       define_method(helper) do |method, *args|
         options = args.detect { |a| a.is_a?(Hash) } || {}
         options_for_base_control_and_select(options)
-        control = super(method, options.slice(:class, :disabled, :id, :placeholder, :readonly, :rows))
+        control = super(method, options.except(*BASE_OPTIONS))
         control = "#{control}#{icon_block(options[:icon])}".html_safe
         control_form_group(nil, options, method, helper) { control }
       end
     end
     
     CHECKBOX_AND_RADIO_HELPERS.each do |helper|
+      helper.gsub!("bootstrap_")
       define_method(helper) do |method, *args|
         helper_name = helper.gsub(/_|button/, "")
         options = args.detect { |a| a.is_a?(Hash) } || {}
@@ -125,6 +125,7 @@ module BootstrapBuilder
     end
     
     COLLECTION_HELPERS.each do |helper|
+      helper.gsub!("bootstrap_")
       define_method(helper) do |method, collection, value_method, text_method, *args|
         options = args.detect { |a| a.is_a?(Hash) } || {}
         base_options(options)
@@ -150,11 +151,12 @@ module BootstrapBuilder
     
     def select(method, choices = nil, select_options = {}, options = {}, &block)
       options_for_base_control_and_select(options)
-      control = super method, choices, select_options, options.slice(:class, :disabled, :placeholder, :readonly, :rows), &block
+      control = super method, choices, select_options, options.except(*BASE_OPTIONS), &block
       control_form_group(nil, options, method, :select) { control }
     end
     
     DATE_SELECT_HELPERS.each do |helper|
+      helper.gsub!("bootstrap_")
       define_method(helper) do |method, options = {}, html_options = {}|
         options_for_base_control_and_select(options)
         html_options[:class]  = [options.delete(:control_class), options.delete(:class), html_options.delete(:class), "form-control bootstrap-builder-#{helper.gsub("_", "-")}"].compact.join " "
@@ -197,7 +199,7 @@ module BootstrapBuilder
       options ||= {}
       options.symbolize_keys!
       
-      BASE_FORM_OPTIONS.each { |name| options[name] ||= @options[name] if @options[name] }
+      BASE_OPTIONS.each { |name| options[name] ||= @options[name] if @options[name] }
       
       options[:class]     = options.delete(:control_class)  if options[:control_class]
       options[:disabled]  = "disabled"                      if options[:disabled]

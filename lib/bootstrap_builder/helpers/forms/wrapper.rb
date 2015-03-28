@@ -4,15 +4,18 @@ module BootstrapBuilder
   module Helpers
     module Forms
       module Wrapper
-        BASE_CONTROL_HELPERS = %w{color_field date_field datetime_field datetime_local_field email_field month_field 
-                                  number_field password_field phone_field range_field search_field telephone_field 
-                                  text_area text_field time_field url_field week_field}
+        BASE_CONTROL_HELPERS = %w{bootstrap_color_field bootstrap_date_field bootstrap_datetime_field 
+                                  bootstrap_datetime_local_field bootstrap_email_field bootstrap_month_field 
+                                  bootstrap_number_field bootstrap_password_field bootstrap_phone_field 
+                                  bootstrap_range_field bootstrap_search_field bootstrap_telephone_field 
+                                  bootstrap_text_area bootstrap_text_field bootstrap_time_field 
+                                  bootstrap_url_field bootstrap_week_field}
                                 
-        CHECKBOX_AND_RADIO_HELPERS = %w{check_box radio_button}
+        CHECKBOX_AND_RADIO_HELPERS = %w{bootstrap_check_box bootstrap_radio_button}
       
-        COLLECTION_HELPERS = %w{collection_check_boxes collection_radio_buttons}
+        COLLECTION_HELPERS = %w{bootstrap_collection_check_boxes bootstrap_collection_radio_buttons}
       
-        DATE_SELECT_HELPERS = %w{date_select time_select datetime_select}
+        DATE_SELECT_HELPERS = %w{bootstrap_date_select bootstrap_time_select bootstrap_datetime_select}
         
         FORM_GROUP_OPTIONS = [:label_col, :control_col, :offset_control_col, :layout]
         
@@ -131,7 +134,7 @@ module BootstrapBuilder
         end
       end
       
-      def form_group(label_text = nil, options = {}, &block)
+      def bootstrap_form_group(label_text = nil, options = {}, &block)
         options = @options.slice(*FORM_GROUP_OPTIONS).merge(options)
         WrapperBuilder.new(@object, nil, nil, label_text, @template, self, false, options).render(&block)
       end

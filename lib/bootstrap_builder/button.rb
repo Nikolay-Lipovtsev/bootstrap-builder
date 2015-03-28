@@ -325,8 +325,8 @@ module BootstrapBuilder
     def base_button_class(options = {})
       options.symbolize_keys!
       
-      options[:style] = "btn-#{(options[:style] || "default").to_s}"
-      options[:size] = "btn-#{options[:size].to_s}" if options[:size]
+      options[:style] = "btn-#{(options[:style] || "default")}"
+      options[:size] = "btn-#{options[:size]}" if options[:size]
       options[:active] = "active" if options[:active]
       options[:class] = ["btn", options[:style],  options[:size], options[:class], options[:active]].compact.join(" ")
       options[:class] = [options[:class], "btn-block"].compact.join(" ") if options[:col]
